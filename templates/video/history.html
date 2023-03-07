@@ -14,6 +14,9 @@
 {% for i in payment_list %}
 <div class="card">
   {{ i.video.name }}
+  {% if i.video.image.url %}
+          <img src="{{i.video.image.url}}" alt="" class="card-img-top" >
+  {% endif %}
 </div>
 
 {{ i.video.image.url }}
