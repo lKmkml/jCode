@@ -21,7 +21,7 @@
 
 {{ i.video.image.url }}
 
-{{ i.payment_date }}
+{{ i.payment_date|date:'d/m/Y' }}
 {{ i.video.description }}
 {{ i.video.price }}
 {{ i.video.videochapter_set.count }}
