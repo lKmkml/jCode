@@ -1,0 +1,28 @@
+{% extends "layout/base.html" %}
+
+{% load static %}
+
+{% block title %} Index Page {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center;"><b>ประวัติการซื้อ
+            .
+        </b></h3>
+        <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
+{% for i in payment_list %}
+{{ i.video.name }}
+{{ i.video.image.url }}
+
+{{ i.payment_date }}
+{{ i.video.description }}
+{{ i.video.price }}
+{{ i.video.videochapter_set.count }}
+{{ i.video.videolesson_set.count }}
+{% endfor %}
+</div>
+</div>
+{% endblock%}
+

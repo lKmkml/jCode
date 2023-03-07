@@ -1,0 +1,21 @@
+{% extends "layout/baseform.html" %}
+
+{% block content %}
+
+<div class="card shadow-sm mb-5 border-0">
+  <div class="card-body">
+<h3 style="text-align: center;"><b>แก้ไข chapter</b></h3>
+<form id ='add_form' method="post" enctype="multipart/form-data" action="?courseid={{courseid}}">
+    {% csrf_token %}
+    <div style="text-align: center;">
+      <table class="table-form">
+        {{ form.as_table }}
+    </table>
+  </div>
+  <div style="text-align: center;">
+    <input type="submit" class="btn btn btn-update mx-2" value="Update">
+  </div>
+</div>
+</div>
+</form>
+{% endblock %}

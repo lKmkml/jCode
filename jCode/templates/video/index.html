@@ -1,0 +1,130 @@
+{% extends "layout/base.html" %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %} Video Page {% endblock %}
+
+{% block content %}
+
+
+
+
+<div class="container">
+  <div class="mb-4">
+    <h6><b>คอร์สแนะนำ</b></h6>
+  </div>
+    <div class="row">
+      {% for b in video_list %}
+
+
+      <div class="col-lg-3 d-flex align-items-stretch">
+
+        <div class="card card-course mb-4">
+
+
+          <a href="{% url 'video:detail' slug=b.slug %}">
+            {% if b.image %}
+            <img src="{{b.image.url}}" alt="" class="card-img-top" >
+            {% endif %}
+          </a>
+
+
+        <div class="card-body">
+          <div class="profile">
+
+
+            <img src="{{b.member.Profile_image.url}}" alt="" >
+
+
+          </div>
+          <h5><a href="{% url 'video:detail' slug=b.slug %}">{{b.name}} </a></h5>
+          <h4></h4>
+          <div class="small">
+            <i class="fa fa-video"></i>
+            {{ b.videolesson_set.count }} บทเรียน
+          </div>
+          <div class="small">
+            ผู้สอน {{b.member}}
+          </div>
+
+        <div class="float-start">
+          {{ b.get_rating|safe }}
+          <span>( {{b.average_rating}} )</span>
+        </div>
+
+        </div>
+
+        <div class="card-footer border-0 bg-transparent">
+          <h5>฿ {{b.price|floatformat:0|intcomma}}  </h5>
+        </div>
+
+        </div>
+
+
+
+      </div>
+
+      {% endfor %}
+    </div>
+
+
+
+
+    <div class="mb-4">
+      <h6><b>คอร์สทั้งหมด</b></h6>
+    </div>
+    <div class="row">
+      {% for b in video_list %}
+
+
+      <div class="col-lg-3 d-flex align-items-stretch">
+
+        <div class="card card-course mb-4">
+
+
+          <a href="#">
+            {% if b.image %}
+            <img src="{{b.image.url}}" alt="" class="card-img-top" >
+            {% endif %}
+          </a>
+
+
+        <div class="card-body">
+          <div class="profile">
+
+
+            <img src="{{b.member.Profile_image.url}}" alt="" >
+
+
+          </div>
+          <h5><a href="{% url 'video:detail' slug=b.slug %}">{{b.name}} </a></h5>
+          <h4></h4>
+          <div class="small">
+            <i class="fa fa-video"></i>
+            {{ b.videolesson_set.count }} บทเรียน
+          </div>
+
+        <div class="small rating">
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star-half"></i>
+          <span>(3.5)</span>
+        </div>
+
+        </div>
+
+        <div class="card-footer border-0 bg-transparent">
+          <h5>฿ {{b.price|floatformat:0|intcomma}} {{b.member}} {{c.user_code}}</h5>
+        </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+
+  </div>
+{% endblock %}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}jCode Academy{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.min.css" rel="stylesheet">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-light  bg-white border-bottom mb-5">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'app:index' %}">jCode Academy</a>
+
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="d-flex">
+          <div class="dropdown">
+            <button class="btn btn-outline-primary btn-category dropdown-toggle mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-bars"></i> ประเภท
+            </button>
+            {% regroup subcategory_list by category as category_list1 %}
+            <ul class="dropdown-menu" >
+              {% for category in category_list1 %}
+              <li>
+                <a class="dropdown-item" href="{% url 'video:index'%}?categoryid={{ category.grouper.id }}">
+                  {{ category.grouper }}
+                  <i class="fa-solid fa-chevron-right" style="float: right;"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-submenu">
+                  {% for sub in category.list %}
+                      <li>
+                        <a class="dropdown-item" href="{% url 'video:index'%}?subcategoryid={{ sub.id }}">{{ sub.name }}</a>
+                      </li>
+                      {% endfor %}
+                </ul>
+
+              </li>{% endfor %}
+            </ul>
+          </div>
+        <form method="post" action="{% url 'app:search' %}" >
+          {% csrf_token %}
+        <div class="navbar-search ms-1">
+          <i class="fa fa-search"></i>
+        <input type="text" name="txtSearch" class="advanced2AutoCompleteInput form-control" placeholder="ค้นหาคอร์สเรียน" autocomplete="off">
+        <input type="submit" style="display:none" />
+      </div>
+    </form>
+    </div>
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+          <li class="nav-item mx-2">
+            <a class="nav-link " aria-current="page" href="{% url 'app:index' %}">หน้าหลัก</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="{% url 'video:index' %}">คอร์สเรียน</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#">วิธีใช้งาน</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link" href="#">เกี่ยวกับ</a>
+          </li>
+        </ul>
+
+
+        {% if not user.is_authenticated %}
+        <a class="btn btn-primary btn-basesign" href="{% url 'app:login' %}">เข้าสู่ระบบ</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+
+        <div class="dropdown">
+          <button class="btn btn-primary btn-profile dropdown mx-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <div class="profile_img" >
+              {% if member_list.Profile_image %}
+              <img src="{{member_list.Profile_image.url}}" alt="" > &nbsp;
+              {% endif %}
+              {{request.user.email}} &nbsp;
+              <i class="fa-solid fa-caret-down"></i>
+            </div>
+
+          </button>
+
+          <ul class="dropdown-menu" >
+            <li>
+              <a type="submit" class="dropdown-item mt-2" href="{% url 'video:management_course' %}">จัดการคอร์ส</a>
+            </li>
+            <li>
+              <a  class="dropdown-item mt-2" href="{% url 'video:history'%}">ประวัติการซื้อ</a>
+            </li>
+            <li>
+              <a  class="dropdown-item mt-2" href="#">ประวัติการเข้าชม</a>
+            </li>
+            <li>
+            <li>
+              <a  class="dropdown-item mt-2" href="{% url 'app:profile' %}">ตั้งค่าโปรไฟล์</a>
+            </li>
+                <form method="post" action="{% url 'app:logout' %}" novalidate>
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item mt-2">ออกระบบ</button>
+                </form>
+            </li>
+
+          </ul>
+        </div>
+
+
+        {% endif %}
+
+      </div>
+
+    </div>
+  </nav>
+
+  {% block subnav %}{% endblock %}
+  <div class="container-fluid">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+
+{% block script %}{% endblock %}
+
+<script>
+  $(function(){
+    $('.btn-play').on('click',function(){
+      var x = $(this).attr('videourl');
+      var video = $('#videoplayer')[0];
+      video.src = x;
+      video.load();
+      video.play();
+    });
+  });
+</script>
+{% if messages %}
+{% for message in messages %}
+<script>
+  Swal.fire({
+  position: 'center',
+  icon: 'success',
+  title: '{{ message }}',
+  showConfirmButton: false,
+  timer: 1500
+})
+
+</script>
+{% endfor %}
+{% endif %}
+<script>
+$(document).ready(function() {
+  $('.advanced2AutoCompleteInput').autoComplete({
+    resolver: 'custom',
+    formatResult: function(item) {
+      var url = "{% url 'video:detail' slug='__slug__' %}".replace('__slug__', item.slug);
+      return {
+        value: item.id,
+        text: item.name,
+        html:
+          $('<img>').attr('src', '/media/'+item.image).css('height', 18).
+          add($('<span>').text(item.name))
+        .on('click', function() {
+          window.location.href = url;
+        })
+      };
+    },
+    events: {
+      search: function(qry, callback) {
+        $.ajax({
+          url: '/autocomplete/',
+          data: { 'qry': qry },
+          success: function(data) {
+            callback(data.results);
+          }
+        });
+      }
+    }
+  });
+});
+
+</script>
+</html>

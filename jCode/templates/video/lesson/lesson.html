@@ -1,0 +1,63 @@
+{% extends "layout/base.html" %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+      <h3 style="text-align: center;"><b>จัดการบทเรียน</b></h3>
+          <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:management_chapter' %}?courseid={{courseid}}"> ย้อนกลับ</a></h5>
+        <div class="col-lg-8 offset-lg-2">
+
+          <div style="text-align: center;">
+            <a class="btn btn-addlesson mt-2" href="{% url 'video:video_addlesson' %}?courseid={{courseid}}&chapterid={{chapterid}}">เพิ่มบทเรียน</a>
+          </div>
+          <table class="table-colored my-4">
+            <tr>
+              <th>หัวข้อหลัก</th>
+              <th>บทเรียน</th>
+              <th>ความยาว</th>
+              <th>วิดีโอ</th>
+              <th>สถานะ</th>
+              <th>ลำดับ</th>
+              <th colspan="2">Action</th>
+            </tr>
+            {% for lesson in lesson_list %}
+            <tr>
+              <td>{{ lesson.chapter.name}}</td>
+              <td>{{ lesson.name }}</td>
+              <td>{{ lesson.duration_time }}</td>
+              <td>{{ lesson.lessonvideo }}</td>
+              {% if lesson.is_locked == True %}
+              <td style="color: #FF0404;">Locked</td>
+              {% elif lesson.is_locked == False %}
+              <td style="color:#0CB009">Free</td>
+              {% endif %}
+              <td>{{ lesson.ordered }}</td>
+              <td><a href="{% url 'video:update_lesson' id=lesson.id %}?courseid={{courseid}}&chapterid={{chapterid}}">แก้ไข</a> </td>
+              <td><a href="javascript:deletelesson({{lesson.id}})" style="color: #FF0404;">ลบ</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+</div>
+<script>
+  function deletelesson(lessonid){
+    Swal.fire({
+      title: 'คุณต้องการลบ Chapter นี้ ?',
+      text: "เมื่อลบแล้วจะไม่สามารถนำข้อมูลกลับมาได้ !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0CB009',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยัน !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/video/deletelesson/"+lessonid+"?courseid={{courseid}}&chapterid={{chapterid}}"
+      }
+    })
+  }
+</script>
+{% endblock %}

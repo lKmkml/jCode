@@ -1,0 +1,57 @@
+{% extends "layout/base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center;"><b>จัดการคอร์สออนไลน์</b></h3>
+        <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
+        <div class="col-lg-8 offset-lg-2">
+            <div style="text-align: center;">
+              <a class="btn btn-createcourse mt-2" href="{% url 'video:video_add'  %}">เพิ่มคอร์สเรียน</a>
+            </div>
+           <table class="table-colored my-4">
+            <tr>
+              <th>คอร์ส</th>
+              <th>บทเรียน</th>
+              <th>ราคา</th>
+              <th>สถานะ</th>
+              <th colspan="2">จัดการ</th>
+            </tr>
+            {% for video in video_list %}
+            <tr>
+              <td><a href="{% url 'video:management_chapter'  %}?courseid={{video.id}}">{{ video.name }}</a></td>
+              <td>{{ video.videolesson_set.count }}</td>
+              <td>{{ video.price }} ฿</td>
+              {% if video.published == True%}
+              <td style="color: #0CB009;"><b>Published</b></td>
+              {% elif video.published == False %}
+              <td style="color: #FF0404;"><b>No Published</b></td>
+              {% endif %}
+              <td><a href="{% url 'video:update_course' id=video.id %}">แก้ไข</a></td>
+              <td><a href="javascript:deletecourse({{video.id}})" style="color: #FF0404;">ลบ</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </div>
+</div>
+<script>
+  function deletecourse(courseid){
+    Swal.fire({
+      title: 'คุณต้องการลบ Chapter นี้ ?',
+      text: "เมื่อลบแล้วจะไม่สามารถนำข้อมูลกลับมาได้ !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0CB009',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยัน !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/video/deletevideo/"+courseid
+      }
+    })
+  }
+</script>
+{% endblock %}

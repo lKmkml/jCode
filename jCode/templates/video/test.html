@@ -1,0 +1,12 @@
+{% load static %}
+{% load ratings %}
+
+{% ratings_inline_js %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% ratings_js %}

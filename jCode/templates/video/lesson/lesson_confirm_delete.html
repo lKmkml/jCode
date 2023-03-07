@@ -1,0 +1,6 @@
+<h1>Delete Article</h1>
+<p>Are you sure you want to delete "{{ lessons.name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm</button>
+</form>

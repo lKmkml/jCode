@@ -1,0 +1,50 @@
+{% extends "layout/baselogin.html" %}
+
+{% load static %}
+{% block title %} login {% endblock %}
+
+{% block content %}
+<div class="framesignin">
+<div class="row">
+    <div class="col-lg-8 offset-lg-2" >
+      <div class="signuplink-body">
+        <h2 class="mt-4"><b> SIGN IN </b></h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-2">
+              <label for="id_username" class="form-label" style="font-size: 14px;">อีเมล</label>
+              <input type="email"  class="form-control" name="username" maxlength="150" required id="id_username" placeholder="Email">
+            </div>
+            <div class="mb-1">
+              <label for="id_password" class="form-label" style="font-size: 14px;">รหัสผ่าน</label>
+              <input type="password"  class="form-control" name="password" autocomplete="current-password" required id="id_password" placeholder="Password">
+            </div>
+            <div class="forgetpassword">
+              <a href="#">ลืมรหัสผ่าน</a>
+            </div>
+            <button type="submit" class="btn btn-signin mt-2">เข้าสู่ระบบ</button>
+            <div class="mt-2" style="text-align: center; font-size: 14px;">
+              <i class="fa-thin fa-hyphen"></i>
+              ― สามารถเข้าสู่ระบบผ่าน ―
+            </div>
+            <div class="loginwith mt-3">
+                <a href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa-brands fa-google"></i></a> &nbsp;
+                <a href="{% url 'social:begin' 'facebook' %}"><i class="fa-brands fa-facebook"></i></a> &nbsp;
+                <a href="#"><i class="fa-solid fa-mobile-screen-button"></i></a> &nbsp;
+            </div>
+                <!-- <img class="btngoogle" src="{% static 'img/google.png' %}" alt="" >
+                <div class="loginwith" >
+                  <img src="{% static 'img/google.png' %}" alt="" >
+                </div>-->
+
+        </form>
+    </div>
+  </div>
+      <div class="signuplink-footer mt-3">
+      ยังไม่ได้สมัครสมาชิกใช่ไหม ? <a href="{% url 'app:signup' %}">คลิกที่นี่เพื่อสร้างผู้ใช้ใหม่</a>
+      </div>
+</div>
+
+
+
+{% endblock %}

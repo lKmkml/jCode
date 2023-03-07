@@ -1,0 +1,49 @@
+{% extends "layout/base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <h3 style="text-align: center;"><b>จัดการ Chapter</b></h3>
+      <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:management_course' %}"> ย้อนกลับ</a></h5>
+        <div class="col-lg-8 offset-lg-2">
+            <div style="text-align: center;">
+              <a class="btn btn-addchapter mt-2" href="{% url 'video:video_addchapter' %}?courseid={{courseid}}">เพิ่มChapter </a>
+            </div>
+            <table class="table-colored my-4">
+              <tr>
+                <th>หัวข้อหลัก</th>
+                <th>ลำดับ</th>
+                <th colspan="2">Action</th>
+              </tr>
+              {% for chapter in chapters_list %}
+              <tr>
+                <td><a href="{% url 'video:management_lesson' %}?courseid={{courseid}}&chapterid={{chapter.id}}">{{ chapter.name }}</a></td>
+                <td>{{ chapter.ordered }}</td>
+                <td><a href="{% url 'video:update_chapter' id=chapter.id %}?courseid={{courseid}} ">แก้ไข</a> </td>
+                <td><a href="javascript:deletechapter({{chapter.id}})" style="color: #FF0404;">ลบ</a></td>
+              </tr>
+              {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+  function deletechapter(chapterid){
+    Swal.fire({
+      title: 'คุณต้องการลบ Chapter นี้ ?',
+      text: "เมื่อลบแล้วจะไม่สามารถนำข้อมูลกลับมาได้ !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#0CB009',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'ยืนยัน !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/video/deletechapter/"+chapterid+"?courseid={{courseid}}"
+      }
+    })
+  }
+</script>
+{% endblock %}
