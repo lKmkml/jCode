@@ -168,14 +168,22 @@ $(document).ready(function() {
     resolver: 'custom',
     formatResult: function(item) {
       var url = "{% url 'video:detail' slug='__slug__' %}".replace('__slug__', item.slug);
-      return {
-        value: item.id,
-        text: item.name,
-        html:
-          $('<img>').attr('src', '/media/'+item.image).css('height', 18).
-          add($('<span>').text(item.name))
+      // return {
+      //   value: item.id,
+      //   text: item.name,
+      //   html:
+      //     $('<img>').attr('src', '/media/'+item.image).css('height', 18).
+      //     add($('<span>').text(item.name))
 
-      };
+      // };
+      return '<div class="dropdown">' +
+        '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">' +
+        '<img src="/media/' + item.image + '" style="height: 18px;"> ' + item.name +
+        '</button>' +
+        '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">' +
+        '<li><a class="dropdown-item" href="' + url + '">' + item.name + '</a></li>' +
+        '</ul>' +
+        '</div>';
     },
     dropdown: true,
     events: {
