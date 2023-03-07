@@ -173,7 +173,7 @@ $(document).ready(function() {
         text: item.name,
         html:
         $('<a>').addClass('dropdown-item').attr('href', url).
-          append(
+          add(
           $('<img>').attr('src', '/media/'+item.image).css('height', 18).
           add($('<span>').text(item.name))
           )
