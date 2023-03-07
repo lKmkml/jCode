@@ -172,11 +172,11 @@ $(document).ready(function() {
         value: item.id,
         text: item.name,
         html:
+        $('<a>').addClass('dropdown-item').attr('href', url).
+          append(
           $('<img>').attr('src', '/media/'+item.image).css('height', 18).
           add($('<span>').text(item.name))
-        .on('click', function() {
-          window.location.href = url;
-        })
+          )
       };
     },
     events: {
