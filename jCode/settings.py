@@ -137,6 +137,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-VIDEO_SERVER_URL = 'http://192.168.1.6:8000'
+VIDEO_SERVER_URL = 'http://206.189.95.6:5000'
 AUTHENTICATION_BACKENDS = ['app.loginemail.EmailBackend',
 ]
