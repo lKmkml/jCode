@@ -12,7 +12,8 @@
         </b></h3>
         <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
 {% for i in payment_list %}
-
+<div class="row">
+  <div class="card-body">
 {{ i.video.name }}
 
 {{ i.payment_date|date:'d/m/Y' }}
@@ -25,6 +26,8 @@
           <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300" height="200">
 {% endif %}
 {{ i.video.price }}
+</div>
+</div>
 {% endfor %}
 
 {% endblock%}
