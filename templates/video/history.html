@@ -8,12 +8,12 @@
 <div class="row">
   <div class="col-lg-10 offset-lg-1">
     {% for i in payment_list %}
-    <div class="card card-list mb-2">
+    <div class="card card-list mb-2" style="border-radius: 25px;">
       <div class="card-body">
         <div class="row">
           <div class="col-lg-4">
             <a href="#">
-            <div class="video-box" style="background-image: url('{{i.video.image.url}}');background-size: contain;background-position: center;">
+            <div class="video-box" style="background-image: url('{{i.video.image.url}}');background-size: cover;background-position: center;">
               <div class="video-player">
                 <i class="fa fa-circle-play fa-4x"></i>
               </div>
