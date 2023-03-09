@@ -15,17 +15,18 @@
 <div class="card">
   {{ i.video.name }}
   {% if i.video.image.url %}
-          <img src="{{i.video.image.url}}" alt="" class="card-img-top" >
+          <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300" height="200">
   {% endif %}
+  {{ i.payment_date|date:'d/m/Y' }}
+  {{ i.video.description }}
+  {{ i.video.price }}
+  {{ i.video.videochapter_set.count }}
+  {{ i.video.videolesson_set.count }}
 </div>
 
-{{ i.video.image.url }}
 
-{{ i.payment_date|date:'d/m/Y' }}
-{{ i.video.description }}
-{{ i.video.price }}
-{{ i.video.videochapter_set.count }}
-{{ i.video.videolesson_set.count }}
+
+
 {% endfor %}
 
 {% endblock%}
