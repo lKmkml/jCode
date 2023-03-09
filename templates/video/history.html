@@ -15,11 +15,11 @@
     </div>
 
     {% for i in payment_list %}
-    <div class="card border-0 mb-2" style="border-radius: 25px;">
+    <div class="card  mb-2" style="border-radius: 25px;">
       <div class="p-5">
         <div class="row">
           <div class="col-lg-4" >
-            <div class="video-box"></div>
+            <div class="video-box">
           {% if i.video.image.url %}
             <img src="{{i.video.image.url}}" alt="" class="img-fluid">
           {% endif %}
