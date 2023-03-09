@@ -21,8 +21,9 @@
             {% for i in payment_list %}
             <div class="card-body">
               <div class="row">
+                {% if i.video.image.url %}
                 <div class="col-lg-4">
-                  {% if i.video.image.url %}
+
                 <img src="{{i.video.image.url}}" alt="" class="img-fluid">
                   <a href="#">
                   <div class="video-box">
@@ -31,8 +32,9 @@
                     </div>
                   </div>
                   </a>
-                  {% endif %}
+
                 </div>
+                {% endif %}
                 <div class="col-lg-8">
                   <h4><a href="#">{{ i.video.name }}</a></h4>
                   <div class="">{{ i.video.description }}</div>
