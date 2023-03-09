@@ -418,8 +418,11 @@ h6{
 .History_description{
   color: #949494;
 }
-.History-chapter{
+.History_chapter{
   color: #de0f0f;
+}
+.History_price{
+  color:#32b823;
 }
 
 .card-list .card-body {
