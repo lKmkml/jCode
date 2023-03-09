@@ -20,9 +20,9 @@
         <div class="row">
           <div class="col-lg-4" >
             <div class="video-box">
-          {% if i.video.image.url %}
-            <img src="{{i.video.image.url}}" alt="" class="img-fluid">
-          {% endif %}
+            {% if i.video.image.url %}
+              <img src="{{i.video.image.url}}" alt="" class="img-fluid">
+            {% endif %}
           </div>
           <div class="col-lg-8">
             <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
@@ -33,10 +33,14 @@
           </div>
         </div>
     </div>
+
     </div>
 
 
 
-{% endfor %}
+
+  </div>
+  {% endfor %}
+</div>
 {% endblock%}
 
