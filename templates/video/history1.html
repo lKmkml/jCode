@@ -7,15 +7,13 @@
 {% block content %}
 
     <div class="row">
-        <h3 style="text-align: center;"><b>ประวัติการซื้อ
-        </b></h3>
+        <h3 style="text-align: center;"><b>ประวัติการซื้อ</b></h3>
         <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
-
     </div>
 
 
     {% for i in payment_list %}
-    <div class="card card-list">
+    <div class="card card-list" style="border-radius: 25px;">
     <div class="card-body">
       <div class="row">
         <div class="col-lg-4">
@@ -33,7 +31,7 @@
             <div class="History_description">{{ i.video.description }}</div>
             <div class="History_chapter">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
             <div class="History_price float-end "> <h5> ซื้อคอร์สแล้ว ฿ {{ i.video.price|floatformat:0|intcomma }}</h5></div>
-            <div>วันที่ทำการสั่งซื้อ : {{ i.payment_date|date:'d/m/Y' }}</div>
+            <div>วันที่สั่งซื้อ : {{ i.payment_date|date:'d/m/Y' }}</div>
         </div>
       </div>
 
