@@ -11,7 +11,9 @@
         <h3 style="text-align: center;"><b>ประวัติการซื้อ
         </b></h3>
         <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
-        {% for i in payment_list %}
+
+    </div>
+    {% for i in payment_list %}
         <div class="card border-0">
             <div class="row">
               <div class="col-lg-4">
@@ -29,8 +31,6 @@
             </div>
         </div>
         <hr class="my-4">
-
-</div>
 </div>
 
 {% endfor %}
