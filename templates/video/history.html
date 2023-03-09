@@ -15,7 +15,7 @@
     </div>
 
     {% for i in payment_list %}
-    <div class="card  mb-2" style="border-radius: 25px;">
+    <div class="card mb-2" style="border-radius: 25px;">
       <div class="p-5">
         <div class="row">
           <div class="col-lg-4" >
@@ -24,7 +24,7 @@
             <img src="{{i.video.image.url}}" alt="" class="img-fluid">
           {% endif %}
           </div>
-          <div class="col-lg-9">
+          <div class="col-lg-8">
             <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
             <div class="">{{ i.video.description }}</div>
             <div class="">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
