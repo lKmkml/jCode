@@ -12,34 +12,19 @@
         </b></h3>
         <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
 {% for i in payment_list %}
-<div class="card">
-  {{ i.video.name }}
 
-  {{ i.payment_date|date:'d/m/Y' }}
-  {{ i.video.description }}
+{{ i.video.name }}
 
-  {{ i.video.videochapter_set.count }}
-  {{ i.video.videolesson_set.count }}
-</div>
+{{ i.payment_date|date:'d/m/Y' }}
+{{ i.video.description }}
 
-<div class="card text-center">
-  <div class="card-body">
-    <h5 class="card-title">{{ i.video.name }}</h5>
-    <div class="col-lg-8">
-      {% if i.video.image.url %}
+{{ i.video.videochapter_set.count }}
+{{ i.video.videolesson_set.count }}
+{{ i.video.description }}
+{% if i.video.image.url %}
           <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300" height="200">
-  {% endif %}
-    </div>
-    <p class="card-text">{{ i.video.description }}</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-  <div class="card-footer text-muted">
-    {{ i.video.price }}
-  </div>
-</div>
-
-
-
+{% endif %}
+{{ i.video.price }}
 {% endfor %}
 
 {% endblock%}
