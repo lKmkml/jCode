@@ -14,16 +14,16 @@
 {% for i in payment_list %}
 <div class="row">
   <div class="card-body">
-{{ i.video.name }}
 
-{{ i.payment_date|date:'d/m/Y' }}
+
+
+
+
+
+
 {{ i.video.description }}
 
-{{ i.video.videochapter_set.count }}
-{{ i.video.videolesson_set.count }}
-{{ i.video.description }}
 
-{{ i.video.price }}
 </div>
 </div>
 <div class="card border-0">
@@ -34,7 +34,11 @@
       {% endif %}
       </div>
       <div class="col-lg-8">
-
+        <a href="#">{{ i.video.name }}</a>
+        {{ i.video.description }}
+        ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ
+        วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}
+        {{ i.video.price }}
       </div>
     </div>
 </div>
