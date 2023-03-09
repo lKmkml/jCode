@@ -22,9 +22,8 @@
           {% if i.video.image.url %}
 
           <a href="{% url 'video:detail' slug=i.video.slug %}" >
-            <div class="video-box">
-            <img src="{{i.video.image.url}}" alt="" class="img-fluid">
-          </div>
+
+            <img src="{{i.video.image.url}}" alt="" class="img-fluid"class="video-box">
             <div class="video-player">
               <i class="fa fa-circle-play fa-4x"></i>
             </div>
