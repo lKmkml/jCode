@@ -14,16 +14,29 @@
 {% for i in payment_list %}
 <div class="card">
   {{ i.video.name }}
-  {% if i.video.image.url %}
-          <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300" height="200">
-  {% endif %}
+
   {{ i.payment_date|date:'d/m/Y' }}
   {{ i.video.description }}
-  {{ i.video.price }}
+
   {{ i.video.videochapter_set.count }}
   {{ i.video.videolesson_set.count }}
 </div>
 
+<div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">{{ i.video.name }}</h5>
+    <div class="col-lg-8">
+      {% if i.video.image.url %}
+          <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300" height="200">
+  {% endif %}
+    </div>
+    <p class="card-text">{{ i.video.description }}</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+  <div class="card-footer text-muted">
+    {{ i.video.price }}
+  </div>
+</div>
 
 
 
