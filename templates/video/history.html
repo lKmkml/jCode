@@ -14,66 +14,29 @@
 
     </div>
 
-      <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-
-          <div class="card card-list">
-            {% for i in payment_list %}
-            <div class="card-body">
-              <div class="row">
-                {% if i.video.image.url %}
-                <div class="col-lg-4">
-                <img src="{{i.video.image.url}}" alt="" class="img-fluid">
-                  <a href="#">
-                  <div class="video-box">
-                    <div class="video-player">
-                      <i class="fa fa-circle-play fa-4x"></i>
-                    </div>
-                  </div>
-                  </a>
-
-                </div>
-                {% endif %}
-                <div class="col-lg-8">
-                  <a href="#">{{ i.video.name }}</a>
-                  <div class="">{{ i.video.description }}</div>
-                  <div class="">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
-                  <div class="float-end">{{ i.video.price }}</div>
-                  <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
-                </div>
-              </div>
-
-            </div>
-            <hr class="my-2">
-            {% endfor %}
+    {% for i in payment_list %}
+    <div class="card border-0 mb-2" style="border-radius: 25px;">
+      <div class="p-5">
+        <div class="row">
+          <div class="col-lg-4" >
+            <div class="video-box"></div>
+          {% if i.video.image.url %}
+            <img src="{{i.video.image.url}}" alt="" class="img-fluid">
+          {% endif %}
           </div>
-
+          <div class="col-lg-9">
+            <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
+            <div class="">{{ i.video.description }}</div>
+            <div class="">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
+            <div class="float-end">{{ i.video.price }}</div>
+            <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
+          </div>
         </div>
-      </div>
-
-</div>
-
-
-
-<!-- <div class="card border-0 mb-2" style="border-radius: 25px;">
-  <div class="p-5">
-    <div class="row">
-      <div class="col-lg-4" >
-        <div class="video-box"></div>
-      {% if i.video.image.url %}
-        <img src="{{i.video.image.url}}" alt="" class="img-fluid">
-      {% endif %}
-      </div>
-      <div class="col-lg-9">
-        <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
-        <div class="">{{ i.video.description }}</div>
-        <div class="">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
-        <div class="float-end">{{ i.video.price }}</div>
-        <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
-      </div>
     </div>
-</div>
-</div> -->
+    </div>
 
+
+
+{% endfor %}
 {% endblock%}
 
