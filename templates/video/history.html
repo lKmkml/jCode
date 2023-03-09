@@ -16,14 +16,14 @@
     {% for i in payment_list %}
         <div class="card border-0">
             <div class="row">
-              <div class="col-lg-3" style="padding: 10px;">
+              <div class="col-lg-3" style="padding: 20px;">
               {% if i.video.image.url %}
                 <img src="{{i.video.image.url}}" alt="" width="100%"height="250">
               {% endif %}
               </div>
               <div class="col-lg-9">
                 <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
-                <div>{{ i.video.description }}</div>
+                <div class="History_description">{{ i.video.description }}</div>
                 <div>ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
                 <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
                 <div>{{ i.video.price }}</div>
