@@ -36,7 +36,7 @@ class Video(models.Model):
         result = ""
         rating = Rating.objects.filter(video=self).aggregate(Avg("rating"))["rating__avg"] or 0
         format_float = "{:.1f}".format(rating)
-        # print(format_float)
+        print(format_float)
         format_float = int(rating*10)
         while format_float > 0 :
             if format_float >=  10 :
