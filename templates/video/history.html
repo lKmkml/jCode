@@ -22,13 +22,19 @@
 {{ i.video.videochapter_set.count }}
 {{ i.video.videolesson_set.count }}
 {{ i.video.description }}
-{% if i.video.image.url %}
-          <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300">
-{% endif %}
+
 {{ i.video.price }}
 </div>
 </div>
 {% endfor %}
-
+<div class="container mt-3">
+  <div class="row g-5">
+    <div class="col-lg-8">
+      {% if i.video.image.url %}
+        <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="300">
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock%}
 
