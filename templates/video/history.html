@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col-lg-4">
           {% if i.video.image.url %}
-          <a href="{% url 'video:detail' slug=i.video.slug %}" class="video-box">
+          <a href="{% url 'video:detail' slug=i.video.slug %}" class="video-box" style="height: 100;">
             <img src="{{i.video.image.url}}" alt="" class="img-fluid">
             <div class="video-player">
               <i class="fa fa-circle-play fa-4x"></i>
