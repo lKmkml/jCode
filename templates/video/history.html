@@ -23,10 +23,10 @@
               </div>
               <div class="col-lg-8">
                 <a href="#">{{ i.video.name }}</a>
-                {{ i.video.description }}
-                ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ
-                วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}
-                {{ i.video.price }}
+                <div>{{ i.video.description }}</div>
+                <div>ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
+                <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
+                <div>{{ i.video.price }}</div>
               </div>
             </div>
         </div>
