@@ -29,9 +29,9 @@
           {% endif %}
         </div>
         <div class="col-lg-8">
-            <a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a>
-            <div class="">{{ i.video.description }}</div>
-            <div class="">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
+            <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
+            <div class="History_description">{{ i.video.description }}</div>
+            <div class="History_chapter">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
             <div class="float-end">{{ i.video.price }}</div>
             <div>วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}</div>
         </div>
