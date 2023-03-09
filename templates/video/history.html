@@ -20,14 +20,16 @@
       <div class="row">
         <div class="col-lg-4">
           {% if i.video.image.url %}
-          <div class="video-box">
+
           <a href="{% url 'video:detail' slug=i.video.slug %}" >
+            <div class="video-box">
             <img src="{{i.video.image.url}}" alt="" class="img-fluid">
+          </div>
             <div class="video-player">
               <i class="fa fa-circle-play fa-4x"></i>
             </div>
           </a>
-        </div>
+
           {% endif %}
         </div>
         <div class="col-lg-8">
