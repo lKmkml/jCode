@@ -11,28 +11,28 @@
         <h3 style="text-align: center;"><b>ประวัติการซื้อ
         </b></h3>
         <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
+        {% for i in payment_list %}
+        <div class="card border-0">
+            <div class="row">
+              <div class="col-lg-4">
+              {% if i.video.image.url %}
+                <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="100"height="400">
+              {% endif %}
+              </div>
+              <div class="col-lg-8">
+                <a href="#">{{ i.video.name }}</a>
+                {{ i.video.description }}
+                ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ
+                วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}
+                {{ i.video.price }}
+              </div>
+            </div>
+        </div>
+        <hr class="my-4">
 
+</div>
+</div>
 
-</div>
-</div>
-{% for i in payment_list %}
-<div class="card border-0">
-    <div class="row">
-      <div class="col-lg-4">
-      {% if i.video.image.url %}
-        <img src="{{i.video.image.url}}" alt="" class="card-img-top" width="100"height="400">
-      {% endif %}
-      </div>
-      <div class="col-lg-8">
-        <a href="#">{{ i.video.name }}</a>
-        {{ i.video.description }}
-        ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ
-        วันที่ทำการสั่งซื้อ {{ i.payment_date|date:'d/m/Y' }}
-        {{ i.video.price }}
-      </div>
-    </div>
-</div>
-<hr class="my-4">
 {% endfor %}
 {% endblock%}
 
