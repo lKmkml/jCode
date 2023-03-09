@@ -434,7 +434,6 @@ h6{
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: relative;
-  object-fit: contain;
 }
 .card-list .video-player{
   position: absolute;
