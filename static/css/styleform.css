@@ -430,7 +430,8 @@ h6{
 }
 .card-list .video-box{
   width: 100%;
-  height: 100px;
+  height: 200px;
+  background-image: url("static/img/course/09.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: relative;
@@ -443,6 +444,6 @@ h6{
   color: rgba(255, 0, 0,0.75);
   transition: all 0.5s ease-in-out;
 }
-.card-list a.video-box:hover .video-player{
+.card-list a .video-box:hover .video-player{
   color: rgba(255, 0, 0,1)
 }
