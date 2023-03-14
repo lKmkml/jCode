@@ -39,11 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
     'social_django',
     'star_ratings',
     'crispy_forms',
@@ -59,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+
 ]
 
 ROOT_URLCONF = 'jCode.urls'
@@ -144,15 +141,30 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 VIDEO_SERVER_URL = 'http://206.189.95.6:5000'
-AUTHENTICATION_BACKENDS = ['app.loginemail.EmailBackend',
-                           'allauth.account.auth_backends.AuthenticationBackend',
-                            'social_core.backends.facebook.FacebookOAuth2',
-]
-SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_FACEBOOK_KEY = '708663364083515'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'b45bba4bcc515f2b984e64984465d1ca'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '581497689095-a8c76nhcj55gu8kiqb7sspb58bfa7iet.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/video'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/accounts/login/'
+
+AUTHENTICATION_BACKENDS = [
+    'app.loginemail.EmailBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# Facebook configuration
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
-SOCIAL_AUTH_FACEBOOK_API_VERSION = '3.0'
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+    'access_type': 'offline'
+}
