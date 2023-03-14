@@ -28,6 +28,8 @@ def login_view(request):
             user = form.get_user()
             login(request,user)
             return redirect('app:index')
+        messages.error(request, 'ไม่ถูกต้อง')
+
     else:
         form = EmailAuthenticationForm()
     return render(request,'account/login.html',{

@@ -44,7 +44,12 @@
       ยังไม่ได้สมัครสมาชิกใช่ไหม ? <a href="{% url 'app:signup' %}">คลิกที่นี่เพื่อสร้างผู้ใช้ใหม่</a>
       </div>
 </div>
-
+{% if messages %}
+{% for message in messages %}
+  {{ message }}
+{% endfor %}
+{% endif %}
+</div>
 
 
 {% endblock %}
