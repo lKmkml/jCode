@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'social_django',
     'star_ratings',
     'crispy_forms',
     'app',
@@ -139,4 +145,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 VIDEO_SERVER_URL = 'http://206.189.95.6:5000'
 AUTHENTICATION_BACKENDS = ['app.loginemail.EmailBackend',
+                           'allauth.account.auth_backends.AuthenticationBackend',
+                            'social_core.backends.facebook.FacebookOAuth2',
 ]
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_FACEBOOK_KEY = '708663364083515'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b45bba4bcc515f2b984e64984465d1ca'
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '3.0'

@@ -1,6 +1,7 @@
 {% extends "layout/baselogin.html" %}
 
 {% load static %}
+{% load socialaccount %}
 {% block title %} login {% endblock %}
 
 {% block content %}
@@ -29,6 +30,7 @@
             </div>
             <div class="loginwith mt-3">
                 <a href="{% url 'social:begin' 'google-oauth2' %}"><i class="fa-brands fa-google"></i></a> &nbsp;
+                <a href="{% provider_login_url 'facebook' method='oauth2' %}">Login with Facebook</a>
                 <a href="{% url 'social:begin' 'facebook' %}"><i class="fa-brands fa-facebook"></i></a> &nbsp;
                 <a href="#"><i class="fa-solid fa-mobile-screen-button"></i></a> &nbsp;
             </div>
