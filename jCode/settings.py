@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'social_django',
     'star_ratings',
     'crispy_forms',
+    'social_django',
     'app',
     'video',
 ]
