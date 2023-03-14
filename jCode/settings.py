@@ -75,6 +75,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'app.context_processors1.category_list',
                 'app.context_processors1.member_list',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
