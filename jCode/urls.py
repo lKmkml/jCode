@@ -23,4 +23,5 @@ urlpatterns = [
     path('',include(('app.urls','app'),namespace='app')),
     path('video/', include(('video.urls','video'),namespace='video')),
     path('auth/', include('social_django.urls', namespace='social')),
+    path('accounts/', include('social_django.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

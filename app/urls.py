@@ -9,6 +9,5 @@ urlpatterns = [
     path('signup/', views.signup_view,name='signup'),
     path('profile/', views.profile_management,name='profile'),
     path('search/', views.search_video,name='search'),
-    path('login/facebook/', views.facebook_login, name='facebook_login'),
     path('autocomplete/', views.video_autocomplete, name='video_autocomplete'),
 ]

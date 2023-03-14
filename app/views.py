@@ -121,13 +121,4 @@ def video_autocomplete(request):
     return JsonResponse({'results': list(results)})
 
 
-#------------------------------------------------------
-#facebook login (not finish)
-#------------------------------------------------------
-def facebook_login(request):
-    user = request.email
-    if user.is_authenticated:
-        return redirect('home')
-    else:
-        login(request, user)
-        return redirect('home')
+
