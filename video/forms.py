@@ -24,6 +24,7 @@ class VideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
             super(VideoForm, self).__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
+                print(field)
                 field.widget.attrs['class'] = 'form-control'
 
 
