@@ -155,9 +155,6 @@ SOCIAL_AUTH_LOGIN_ERROR_URL = '/accounts/login/'
 
 AUTHENTICATION_BACKENDS = [
     'app.loginemail.EmailBackend',
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
 ]
 
 # Facebook configuration
