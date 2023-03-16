@@ -8,7 +8,7 @@
 
 <div class="row">
   <h3 style="text-align: center;"><b>ประวัติการซื้อ</b></h3>
-  <h5 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:index' %}"> ย้อนกลับ</a></h5>
+  <h5 style="float: left;"><a href="{% url 'video:index' %}"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
 </div>
 
 <div class="row">
@@ -18,7 +18,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-lg-4">
-            <a href="#">
+            <a href="{% url 'video:detail' slug=i.slug %}">
             <div class="video-box" style="background-image: url('{{i.video.image.url}}');background-size: cover;background-position: center;">
               <div class="video-player">
                 <i class="fa fa-circle-play fa-4x"></i>
