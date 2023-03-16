@@ -1,6 +1,7 @@
 {% extends "layout/base.html" %}
-{% load humanize %}
 
+{% load humanize %}
+{% block title %} Course Detail Page {% endblock %}
 {% block subnav %}
 <div class="subnav_new">
   <div class="container">
@@ -8,7 +9,8 @@
       {% if count_payment == 0 %}
       <h1>฿ {{ video.price|floatformat:0|intcomma }} </h1>
       {% elif count_payment > 0 %}
-      <h1>฿ {{ video.price|floatformat:0|intcomma }} <i class="fa-sharp fa-solid fa-circle-check"></i> ชำระเงินแล้ว</h1>
+      <h1>฿ {{ video.price|floatformat:0|intcomma }} </h1>
+      <i class="fa-sharp fa-solid fa-circle-check"></i> ชำระเงินแล้ว
       {% endif %}
     </div>
 

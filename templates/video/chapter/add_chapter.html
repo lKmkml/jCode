@@ -1,7 +1,7 @@
 {% extends "layout/baseform.html" %}
 {% load humanize %}
 {% load crispy_forms_tags %}
-
+{% block title %} Add Chapter Page {% endblock %}
 {% block content %}
 <div class="container">
     <h6 style="float: left;"><i class="fa fa-chevron-left"></i><a href="{% url 'video:management_chapter' %}?courseid={{courseid}}"> ย้อนกลับ</a></h6>
