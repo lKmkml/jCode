@@ -24,8 +24,8 @@ class VideoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
             super(VideoForm, self).__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
-                print(field)
-                field.widget.attrs['class'] = 'form-control'
+                if field_name != 'published':
+                    field.widget.attrs['class'] = 'form-control'
 
 
 #------------------------------------------------------
@@ -67,4 +67,5 @@ class VideolessonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(VideolessonForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if field_name!= "is_locked":
+                field.widget.attrs['class'] = 'form-control'

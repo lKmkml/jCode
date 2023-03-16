@@ -5,13 +5,14 @@
 <div class="subnav_new">
   <div class="container">
     <div class="float-end mt-2">
-      <h1>฿ {{ video.price|floatformat:0|intcomma }} <i class="fa-sharp fa-solid fa-circle-check"></i>ชำระเงินแล้ว</h1>
+      {% if count_payment == 0 %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }} </h1>
+      {% elif count_payment > 0 %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }} <i class="fa-sharp fa-solid fa-circle-check"></i> ชำระเงินแล้ว</h1>
+      {% endif %}
     </div>
-    {% if count_payment == 0 %}
-    <h1>{{ video.name }}</h1>
-    {% elif count_payment > 0 %}
+
     <h1>{{ video.name }} </h1>
-    {% endif %}
     <a href="{% url 'video:index' %}" class="text-white"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a>
   </div>
 </div>
