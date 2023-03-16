@@ -18,7 +18,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-lg-4">
-            <a href="{% url 'video:detail' slug=i.slug %}">
+            <a href="{% url 'video:detail' slug=i.video.slug %}">
             <div class="video-box" style="background-image: url('{{i.video.image.url}}');background-size: cover;background-position: center;">
               <div class="video-player">
                 <i class="fa fa-circle-play fa-4x"></i>
