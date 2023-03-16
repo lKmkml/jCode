@@ -74,7 +74,7 @@
                           {% if lesson.lessonvideo %}
                           <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.lessonvideo.url}}' class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                           {% else %}
-                          <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.lessonvideo.url}}' class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
+                          <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                           {% endif %}
                         {% endif %}
 
