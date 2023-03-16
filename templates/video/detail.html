@@ -66,7 +66,7 @@
                         <td style="width:50%">{{ lesson.name }}</td>
                         <td style="width:20%"><i class="far fa-clock"></i> {{ lesson.duration_time }}</td>
 
-                        {% if not lesson.is_locked %}
+                        {% if not lesson.is_locked and lesson.lessonvideo.url %}
 
                         <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.lessonvideo.url}}' class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                         {% elif lesson.is_locked and count_payment == 0%}
