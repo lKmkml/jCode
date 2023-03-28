@@ -90,15 +90,16 @@ def visit(request):
     if request.user.is_authenticated:
         user_id = request.user.id
         activity_list = UserActivity.objects.filter(user_id=user_id).order_by('-activity_time')
+
         rows = []
         for a in activity_list:
             lesson = VideoLesson.objects.filter(id=a.lesson_id)
+            video = Video.objects
             rows.append({
                 'lesson': lesson,
                 'activity_time': a.activity_time,
+                'video_list':video
             })
-
-
     return render(request, 'video/visit.html', {'lesson_list':rows})
 
     # {% for l in  lesson_list %}
