@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category,CategorySub,Member
+from .models import Category,CategorySub,Member,UserActivity
 # Register your models here.
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,3 +15,4 @@ class CategorySubAdmin(admin.ModelAdmin):
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(CategorySub,CategorySubAdmin)
 admin.site.register(Member)
+admin.site.register(UserActivity)

@@ -101,7 +101,7 @@
               <a  class="dropdown-item mt-2" href="{% url 'video:history'%}">ประวัติการซื้อ</a>
             </li>
             <li>
-              <a  class="dropdown-item mt-2" href="#">ประวัติการเข้าชม</a>
+              <a  class="dropdown-item mt-2" href="{% url 'video:visit'%}">ประวัติการเข้าชม</a>
             </li>
             <li>
             <li>
@@ -140,11 +140,25 @@
 <script>
   $(function(){
     $('.btn-play').on('click',function(){
-      var x = $(this).attr('videourl');
-      var video = $('#videoplayer')[0];
-      video.src = x;
-      video.load();
-      video.play();
+      var video_url = $(this).attr('videourl');
+      var lesson_id = $(this).attr('videolessionid');
+      $.ajax({
+        url: '/videoactivity/save/',    // url ตัวนั้น
+        data: { 'lesson_id': lesson_id },
+        success: function(data) {
+          console.log(data.results);
+
+          // ต้องบันทึกกิจกรรมเรียบร้อยก่อน จึงเล่นวีดีโอนี้
+
+          var video = $('#videoplayer')[0];
+          video.src = video_url;
+          video.load();
+          video.play();
+        }
+      });
+
+
+
     });
   });
 </script>

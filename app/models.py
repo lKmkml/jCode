@@ -42,3 +42,19 @@ class Member(models.Model):
 
     def __str__(self):
         return self.user_code
+
+
+#------------------------------------------------------
+#Model ของ User activity
+#------------------------------------------------------
+class UserActivity(models.Model):
+    user_id = models.IntegerField(null=True, blank=True)
+    lesson_id = models.IntegerField(null=True, blank=True)
+    activity_name = models.TextField(null=True, blank=True)
+    activity_time = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return str(self.user_id)

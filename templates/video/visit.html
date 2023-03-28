@@ -1,0 +1,46 @@
+{% extends "layout/baseform.html" %}
+
+{% load static %}
+{% load humanize %}
+{% block title %} Visit History Page {% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+  <h3 style="text-align: center;"><b>ประวัติการเข้าชม</b></h3>
+  <h5 style="float: left;"><a href="{% url 'video:index' %}"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+</div>
+</div>
+
+<div class="row">
+
+  <div class="col-lg-10 offset-lg-1">
+    {% for i in lesson_list %}
+    {% for a in i.lesson %}
+    <div class="card card-list mb-2" style="border-radius: 7px;">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-4">
+            <a href="{% url 'video:detail' slug=a.videos.slug %}">
+            <div class="video-box" style="background-image: url('{{a.videos.image.url}}');background-size: cover;background-position: center;">
+              <div class="video-player">
+                <i class="fa fa-circle-play fa-4x"></i>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-lg-8">
+            <h4><a href="{% url 'video:detail' slug=a.videos.slug %}">{{ a.videos.name }}</a></h4>
+            <div class="History_chapter">ประกอบไปด้วย {{ a.videos.videochapter_set.count }} บทเรียน , {{ a.videos.videolesson_set.count }} วีดีโอ</div>
+            <div>รับชมล่าสุด :  {{ a.chapter }} [ {{i.activity_time}} ]</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

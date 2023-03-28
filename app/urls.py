@@ -10,4 +10,6 @@ urlpatterns = [
     path('profile/', views.profile_management,name='profile'),
     path('search/', views.search_video,name='search'),
     path('autocomplete/', views.video_autocomplete, name='video_autocomplete'),
+    path('videoactivity/save/', views.video_activity, name='video_activity'),
+
 ]

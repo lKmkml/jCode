@@ -2,6 +2,7 @@ from django.db import models
 from app.models import Category,CategorySub,Member
 from django.contrib.auth.models import User
 from django.db.models import Avg
+import subprocess
 
 
 #------------------------------------------------------

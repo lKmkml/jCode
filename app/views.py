@@ -4,9 +4,10 @@ from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import AbstractUser,User
 from video.models import Video,VideoLesson,Member
-from .models import Category,CategorySub
+from .models import Category,CategorySub,UserActivity
 from .forms import EmailAuthenticationForm,SignUpForm,ProfileForm
 from django.contrib import messages
+from datetime import datetime
 
 
 #Landing page
@@ -123,4 +124,24 @@ def video_autocomplete(request):
     return JsonResponse({'results': list(results)})
 
 
-
+# บันทึกกิจกรรมว่า user ดู video อะไรอยู่
+def video_activity(request):
+    lesson_id = request.GET.get('lesson_id')
+    user_id = request.user.id
+    if request.user.is_authenticated:
+        act_obj = UserActivity.objects.filter(lesson_id=lesson_id,user_id=user_id)
+        if act_obj:
+            # update
+            # act_obj = UserActivity.objects.filter(lesson_id=lesson_id,user_id=user_id).first()
+            # act_obj.activity_time = datetime.now()
+            # act_obj.save()
+            act_obj.update(activity_time=datetime.now())
+        else:
+            # insert
+            act_obj = UserActivity()
+            act_obj.user_id = user_id
+            act_obj.lesson_id = int(lesson_id)
+            act_obj.activity_name = "View video lesson {0}".format(lesson_id)
+            act_obj.activity_time = datetime.now()
+            act_obj.save()
+    return JsonResponse({'results': 'success'})

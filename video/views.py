@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import ListView, DetailView
-from .models import Video,VideoLesson,VideoChapter
-from .models import Category,CategorySub,Member,Payment, Rating
+from .models import Video,VideoLesson,VideoChapter,Payment, Rating
+from app.models import Category,CategorySub,Member,UserActivity
 from .forms import VideoForm,VideochapterForm,VideolessonForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.conf import settings
 from slugify import slugify
 from django.contrib.auth.models import User
-
+import subprocess
 
 #------------------------------------------------------
 #Video page
@@ -32,6 +32,8 @@ def index(request):
 #------------------------------------------------------
 #Purchase History
 #------------------------------------------------------
+
+
 def payment_history(request):
     member = Member.objects.filter(user_id=request.user.id).first()
     history = Payment.objects.filter(member_id=member.id)
@@ -62,6 +64,11 @@ class VideoDetailView(DetailView):
         return context
 
 
+#------------------------------------------------------
+#payment Course
+#------------------------------------------------------
+
+
 def payment(request, slug):
     if request.user.is_authenticated:
         video = Video.objects.filter(slug=slug).first()
@@ -75,8 +82,29 @@ def payment(request, slug):
 
 
 #------------------------------------------------------
-#course management
+#visit Course
 #------------------------------------------------------
+
+
+def visit(request):
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        activity_list = UserActivity.objects.filter(user_id=user_id).order_by('-activity_time')
+        rows = []
+        for a in activity_list:
+            lesson = VideoLesson.objects.filter(id=a.lesson_id)
+            rows.append({
+                'lesson': lesson,
+                'activity_time': a.activity_time,
+            })
+
+
+    return render(request, 'video/visit.html', {'lesson_list':rows})
+
+    # {% for l in  lesson_list %}
+    #       {{ l.lesson.videos.x }}
+    #       {{ l.lesson.chapter.x }}
+    # {% endfor %}
 
 
 #Show Course
