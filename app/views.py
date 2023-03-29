@@ -57,7 +57,7 @@ def signup_view(request):
         form = SignUpForm(data=request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            email = form.cleaned_data.get('email')
+            email = form.cleaned_data.get('username')
             username = email.split('@')[0]
             user.username = username
             user.save()
