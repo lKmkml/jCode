@@ -101,12 +101,9 @@
             {{ b.videolesson_set.count }} บทเรียน
           </div>
 
-        <div class="small rating">
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star"></i>
-          <i class="fa fa-star-half"></i>
-          <span>(3.5)</span>
+        <div class="float-start">
+          {{ b.get_rating|safe }}
+          <span>( {{b.average_rating}} )</span>
         </div>
 
         </div>
