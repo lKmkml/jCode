@@ -143,7 +143,9 @@
           <h4 class="text-center mb-4"><b>เกี่ยวกับผู้สอน</b></h4>
           <div class="profile overflow-hidden">
             <div class="float-start me-4">
+              {% if video.member.Profile_image %}
               <img src="{{video.member.Profile_image.url}}" class="mb-4" style="width:90px; height:90px; border-radius:50%; left:50%; border:4px solid rgba(200,200,200,0.4);" alt="">
+              {% endif %}
             </div>
             <div class="overflow-hidden">
               <h6>
