@@ -1,15 +1,19 @@
+import uuid
+import os
+from pathlib import Path
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import ListView, DetailView
 from .models import Video,VideoLesson,VideoChapter,Payment, Rating
 from app.models import Category,CategorySub,Member,UserActivity
 from .forms import VideoForm,VideochapterForm,VideolessonForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.conf import settings
 from slugify import slugify
 from django.contrib.auth.models import User
 import subprocess
+
 
 #------------------------------------------------------
 #Video page
@@ -82,6 +86,18 @@ def payment(request, slug):
 
 
 #------------------------------------------------------
+#load category_sub by category
+#------------------------------------------------------
+
+
+def load_category_sub(request):
+    category_id = request.GET.get('category')
+    category_sub = CategorySub.objects.filter(category_id=category_id)
+    print(category_sub)
+    return render(request, 'video/category_sub_dropdown_list_options.html', {'category_subs': category_sub})
+
+
+#------------------------------------------------------
 #visit Course
 #------------------------------------------------------
 
@@ -90,22 +106,17 @@ def visit(request):
     if request.user.is_authenticated:
         user_id = request.user.id
         activity_list = UserActivity.objects.filter(user_id=user_id).order_by('-activity_time')
-
         rows = []
         for a in activity_list:
-            lesson = VideoLesson.objects.filter(id=a.lesson_id)
-            video = Video.objects
+            lesson = VideoLesson.objects.filter(id=a.lesson_id).first()
             rows.append({
+                'lesson_id': a.lesson_id,
                 'lesson': lesson,
                 'activity_time': a.activity_time,
-                'video_list':video
+                'video_id': lesson.videos.id,
             })
+        rows.sort(key=lambda x: (x.get('video_id'), x.get('activity_time')), reverse=True)
     return render(request, 'video/visit.html', {'lesson_list':rows})
-
-    # {% for l in  lesson_list %}
-    #       {{ l.lesson.videos.x }}
-    #       {{ l.lesson.chapter.x }}
-    # {% endfor %}
 
 
 #Show Course
@@ -118,9 +129,28 @@ def management_course(request):
 def video_add(request):
     form = VideoForm()
     if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES)
+        form = VideoForm(request.POST)
         if form.is_valid():
             video = form.save(commit=False)
+
+            # check existing video upload file
+            if request.FILES.get('videoexample'):
+                BASE_DIR = Path(__file__).resolve().parent.parent
+                video_file = request.FILES['videoexample']
+
+                file_name, file_extension = os.path.splitext(video_file.name)
+                upload_file_name = '{0}{1}'.format(uuid.uuid1(), file_extension)
+                upload_file_media = '/media/video/example/'
+
+                media_path = upload_file_media + '' + upload_file_name
+                absolute_path = str(BASE_DIR) + '' + media_path
+
+                with open(absolute_path, 'wb+') as fs_dest:
+                    for chunk in video_file.chunks():
+                        fs_dest.write(chunk)
+                # save media path to video url
+                video.videoexample_url = media_path
+
             video.slug = slugify(video.name)
             video.member = Member.objects.filter(user_id=request.user.id).first()
             video.published = True
@@ -138,10 +168,26 @@ def video_add(request):
 def update_video(request, id):
     videos= Video.objects.get(id=id)
     if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES, instance=videos)
+        form = VideoForm(request.POST, instance=videos)
         if form.is_valid():
             video = form.save(commit=False)
+                        # check existing video upload file
+            if request.FILES.get('videoexample'):
+                BASE_DIR = Path(__file__).resolve().parent.parent
+                video_file = request.FILES['videoexample']
 
+                file_name, file_extension = os.path.splitext(video_file.name)
+                upload_file_name = '{0}{1}'.format(uuid.uuid1(), file_extension)
+                upload_file_media = '/media/video/example/'
+
+                media_path = upload_file_media + '' + upload_file_name
+                absolute_path = str(BASE_DIR) + '' + media_path
+
+                with open(absolute_path, 'wb+') as fs_dest:
+                    for chunk in video_file.chunks():
+                        fs_dest.write(chunk)
+                # save media path to video url
+                video.videoexample_url = media_path
             video.save()
             messages.success(request, 'บันทึกสำเร็จ')
             return redirect('video:management_course')
@@ -234,9 +280,26 @@ def video_addlesson(request):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
     if request.method == 'POST':
-        form = VideolessonForm(request.POST, request.FILES)
+        form = VideolessonForm(request.POST)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
+                        # check existing video upload file
+            if request.FILES.get('lessonvideo'):
+                BASE_DIR = Path(__file__).resolve().parent.parent
+                video_file = request.FILES['lessonvideo']
+
+                file_name, file_extension = os.path.splitext(video_file.name)
+                upload_file_name = '{0}{1}'.format(uuid.uuid1(), file_extension)
+                upload_file_media = '/media/video/lesson/video/'
+
+                media_path = upload_file_media + '' + upload_file_name
+                absolute_path = str(BASE_DIR) + '' + media_path
+
+                with open(absolute_path, 'wb+') as fs_dest:
+                    for chunk in video_file.chunks():
+                        fs_dest.write(chunk)
+                # save media path to video url
+                lesson_obj.video_url = media_path
             lesson_obj.videos_id=courseid
             lesson_obj.chapter_id=chapterid
             lesson_obj.save()
@@ -257,9 +320,25 @@ def update_lesson(request, id):
     chapterid=request.GET.get('chapterid')
     lessons= VideoLesson.objects.get(id=id)
     if request.method == 'POST':
-        form = VideolessonForm(request.POST, request.FILES,  instance=lessons)
+        form = VideolessonForm(request.POST,  instance=lessons)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
+            if request.FILES.get('lessonvideo'):
+                BASE_DIR = Path(__file__).resolve().parent.parent
+                video_file = request.FILES['lessonvideo']
+
+                file_name, file_extension = os.path.splitext(video_file.name)
+                upload_file_name = '{0}{1}'.format(uuid.uuid1(), file_extension)
+                upload_file_media = '/media/video/lesson/video/'
+
+                media_path = upload_file_media + '' + upload_file_name
+                absolute_path = str(BASE_DIR) + '' + media_path
+
+                with open(absolute_path, 'wb+') as fs_dest:
+                    for chunk in video_file.chunks():
+                        fs_dest.write(chunk)
+                # save media path to video url
+                lesson_obj.video_url = media_path
             lesson_obj.videos_id=courseid
             lesson_obj.chapter_id=chapterid
             form.save()

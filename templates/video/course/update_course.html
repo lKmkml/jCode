@@ -6,7 +6,7 @@
 <div class="card shadow-sm mb-5 border-0">
 <div class="card-body">
 <h3 style="text-align: center;"><b>จัดการคอร์สออนไลน์</b></h3>
-<form id ='add_form' method="post" enctype="multipart/form-data">
+<form id ='add_form' method="post" enctype="multipart/form-data" data-catsub-url="{% url 'video:ajax_load_category_sub' %}">
     {% csrf_token %}
     <div style="text-align: center;">
       <table class="table-form">
@@ -14,11 +14,29 @@
     </table>
   </div>
   <div style="text-align: center;">
-    <input type="submit" class="btn btn btn-update mx-2" value="Update">
+    <input name="submit-update-course" type="submit" class="btn btn btn-update mx-2" value="บันทึก">
   </div>
   </div>
 </div>
 </div>
 
 </form>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $("#id_category").change(function () {
+    var url = $("#add_form").attr("data-catsub-url");  // get the url of the `load_cities` view
+    var categoryId = $(this).val();  // get the selected country ID from the HTML input
+
+    $.ajax({                       // initialize an AJAX request
+      url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+      data: {
+        'category': categoryId       // add the country id to the GET parameters
+      },
+      success: function (data) {   // `data` is the return of the `load_cities` view function
+        $("#id_category_sub").html(data);  // replace the contents of the city input with the data that came from the server
+      }
+    });
+
+  });
+</script>
 {% endblock %}

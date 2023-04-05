@@ -21,6 +21,7 @@ urlpatterns = [
     path('payment/<slug:slug>/', views.payment, name='payment'),
     path('history/',views.payment_history,name='history'),
     path('visit/',views.visit,name='visit'),
+    path('load-category_sub/', views.load_category_sub, name='ajax_load_category_sub'),
     # rating url
     path('rate/<int:video_id>/<int:rating>/', views.rating_video,name='rate'),
 ]

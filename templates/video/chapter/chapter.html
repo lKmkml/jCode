@@ -20,8 +20,8 @@
               <tr>
                 <td><a href="{% url 'video:management_lesson' %}?courseid={{courseid}}&chapterid={{chapter.id}}">{{ chapter.name }}</a></td>
                 <td>{{ chapter.ordered }}</td>
-                <td><a href="{% url 'video:update_chapter' id=chapter.id %}?courseid={{courseid}} ">แก้ไข</a> </td>
-                <td><a href="javascript:deletechapter({{chapter.id}})" style="color: #FF0404;">ลบ</a></td>
+                <td><a name ="{{ chapter.name }} edit" href="{% url 'video:update_chapter' id=chapter.id %}?courseid={{courseid}} ">แก้ไข</a> </td>
+                <td><a name ="{{ chapter.name }} delete" href="javascript:deletechapter({{chapter.id}})" style="color: #FF0404;">ลบ</a></td>
               </tr>
               {% endfor %}
             </table>

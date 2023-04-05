@@ -28,8 +28,8 @@
               {% elif video.published == False %}
               <td style="color: #FF0404;"><b>No Published</b></td>
               {% endif %}
-              <td><a href="{% url 'video:update_course' id=video.id %}">แก้ไข</a></td>
-              <td><a href="javascript:deletecourse({{video.id}})" style="color: #FF0404;">ลบ</a></td>
+              <td><a name ="{{ video.name }} edit" href="{% url 'video:update_course' id=video.id %}">แก้ไข</a></td>
+              <td><a name ="{{ video.name }} delete" href="javascript:deletecourse({{video.id}})" style="color: #FF0404;">ลบ</a></td>
             </tr>
             {% endfor %}
           </table>

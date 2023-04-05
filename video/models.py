@@ -15,6 +15,7 @@ class Video(models.Model):
     description = models.TextField(null=True, blank=True)
     image = models.FileField(upload_to='video', null=True, blank=True)
     videoexample=models.FileField(upload_to='video/example', null=True, blank=True)
+    videoexample_url = models.CharField(max_length=450, null=True, blank=True)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     category_sub = models.ForeignKey(CategorySub, null=True, blank=True, on_delete=models.SET_NULL)
     price = models.DecimalField(max_digits=15, decimal_places=2, null=True, blank=True, default=0)

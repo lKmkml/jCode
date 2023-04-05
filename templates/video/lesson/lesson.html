@@ -27,15 +27,15 @@
               <td>{{ lesson.chapter.name}}</td>
               <td>{{ lesson.name }}</td>
               <td>{{ lesson.duration_time }}</td>
-              <td>{{ lesson.lessonvideo }}</td>
+              <td>{{ lesson.video_url }}</td>
               {% if lesson.is_locked == True %}
               <td style="color: #FF0404;">Locked</td>
               {% elif lesson.is_locked == False %}
               <td style="color:#0CB009">Free</td>
               {% endif %}
               <td>{{ lesson.ordered }}</td>
-              <td><a href="{% url 'video:update_lesson' id=lesson.id %}?courseid={{courseid}}&chapterid={{chapterid}}">แก้ไข</a> </td>
-              <td><a href="javascript:deletelesson({{lesson.id}})" style="color: #FF0404;">ลบ</a></td>
+              <td><a name="{{ lesson.name }} edit" href="{% url 'video:update_lesson' id=lesson.id %}?courseid={{courseid}}&chapterid={{chapterid}}">แก้ไข</a> </td>
+              <td><a name="{{ lesson.name }} delete" href="javascript:deletelesson({{lesson.id}})" style="color: #FF0404;">ลบ</a></td>
             </tr>
             {% endfor %}
           </table>

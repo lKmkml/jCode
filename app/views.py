@@ -145,3 +145,5 @@ def video_activity(request):
             act_obj.activity_time = datetime.now()
             act_obj.save()
     return JsonResponse({'results': 'success'})
+
+

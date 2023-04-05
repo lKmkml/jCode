@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import jose
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'sslserver',
-    'social_django',
     'star_ratings',
     'crispy_forms',
+    'social_django',
+    'social_core',
     'app',
     'video',
 ]
@@ -72,9 +74,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
                 'app.context_processors1.category_list',
                 'app.context_processors1.member_list',
+                'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
             ],
         },
@@ -153,18 +155,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-VIDEO_SERVER_URL = 'http://206.189.95.6:5000'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '708663364083515'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'b45bba4bcc515f2b984e64984465d1ca'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '581497689095-a8c76nhcj55gu8kiqb7sspb58bfa7iet.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
+# test
+# VIDEO_SERVER_URL = 'http://192.168.1.102:5000/video?videoname='
+
+SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
+SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '581497689095-a8c76nhcj55gu8kiqb7sspb58bfa7iet.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/video'
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/accounts/login/'
 
 AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
     'app.loginemail.EmailBackend',
+
+
 ]
 
 # Facebook configuration
@@ -174,7 +184,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 # Google configuration
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
-SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
-    'access_type': 'offline'
-}
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
+# SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
+#     'access_type': 'offline'
+# }

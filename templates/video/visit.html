@@ -6,44 +6,44 @@
 
 {% block content %}
 <div class="container">
-<div class="row">
-  <h3 style="text-align: center;"><b>ประวัติการเข้าชม</b></h3>
-  <h5 style="float: left;"><a href="{% url 'video:index' %}"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
-</div>
+  <div class="row">
+    <h3 style="text-align: center;"><b>ประวัติการเข้าชม</b></h3>
+    <h5 style="float: left;"><a href="{% url 'video:index' %}"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+  </div>
 </div>
 
 <div class="row">
-
   <div class="col-lg-10 offset-lg-1">
-    {% for i in lesson_list %}
-
-    {% for a in i.lesson %}
-
-
+    {% regroup lesson_list by video_id as lessons %}
+    {% for l in lessons %}
     <div class="card card-list mb-2" style="border-radius: 7px;">
       <div class="card-body">
         <div class="row">
-          <div class="col-lg-4">
-            <a href="{% url 'video:detail' slug=a.videos.slug %}">
-            <div class="video-box" style="background-image: url('{{a.videos.image.url}}');background-size: cover;background-position: center;">
+          <div class="col-lg-3">
+            <a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}?visit_id={{ l.list.0.lesson.id }}">
+            <div class="video-box" style="background-image: url('{{l.list.0.lesson.videos.image.url}}');background-size: cover;background-position: center;">
               <div class="video-player">
                 <i class="fa fa-circle-play fa-4x"></i>
               </div>
             </div>
             </a>
           </div>
-          <div class="col-lg-8">
-            <h4><a href="{% url 'video:detail' slug=a.videos.slug %}">{{ a.videos.name }}</a></h4>
-            <div class="History_chapter">ประกอบไปด้วย {{ a.videos.videochapter_set.count }} บทเรียน , {{ a.videos.videolesson_set.count }} วีดีโอ</div>
-            <div>รับชมล่าสุด : <a href="{% url 'video:detail' slug=a.videos.slug %}">{{ a.chapter }}</a>  [ {{i.activity_time}} ]</div>
+          <div class="col-lg-9">
+            <h4><a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}">{{ l.list.0.lesson.videos.name }}</a></h4>
+            <div class="History_chapter">ประกอบไปด้วย {{ l.list.0.lesson.videos.videochapter_set.count }} บทเรียน , {{ l.list.0.lesson.videos.videolesson_set.count }} วีดีโอ</div>
+            <div class="mt-2">
+              รับชมล่าสุด :
+              <ul>
+                {% for lt in l.list %}
+                <li><a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}?visit_id={{ lt.lesson.id }}&visit_url={{ lt.lesson.lessonvideo.url }}">{{ lt.lesson.name }}</a>  <span class="small ms-lg-2" style="color: #999">[ {{lt.activity_time|date:'d/M/Y H:i'}} ]</span></li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </div>
-
       </div>
     </div>
     {% endfor %}
-    {% endfor %}
   </div>
 </div>
-
 {% endblock %}
