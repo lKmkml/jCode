@@ -168,7 +168,7 @@ def video_add(request):
 def update_video(request, id):
     videos= Video.objects.get(id=id)
     if request.method == 'POST':
-        form = VideoForm(request.POST,request.FILES, instance=videos)
+        form = VideoForm(request.POST, instance=videos)
         if form.is_valid():
             video = form.save(commit=False)
                         # check existing video upload file
@@ -188,6 +188,7 @@ def update_video(request, id):
                         fs_dest.write(chunk)
                 # save media path to video url
                 video.videoexample_url = media_path
+            video.image = request.FILES['image']
             video.save()
             messages.success(request, 'บันทึกสำเร็จ')
             return redirect('video:management_course')
@@ -280,7 +281,7 @@ def video_addlesson(request):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
     if request.method == 'POST':
-        form = VideolessonForm(request.POST,request.FILES)
+        form = VideolessonForm(request.POST)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
                         # check existing video upload file
@@ -320,7 +321,7 @@ def update_lesson(request, id):
     chapterid=request.GET.get('chapterid')
     lessons= VideoLesson.objects.get(id=id)
     if request.method == 'POST':
-        form = VideolessonForm(request.POST,request.FILES,  instance=lessons)
+        form = VideolessonForm(request.POST,  instance=lessons)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
             if request.FILES.get('lessonvideo'):
