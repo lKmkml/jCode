@@ -129,7 +129,7 @@ def management_course(request):
 def video_add(request):
     form = VideoForm()
     if request.method == 'POST':
-        form = VideoForm(request.POST)
+        form = VideoForm(request.POST,request.FILES,request.FILES)
         if form.is_valid():
             video = form.save(commit=False)
 
@@ -168,7 +168,7 @@ def video_add(request):
 def update_video(request, id):
     videos= Video.objects.get(id=id)
     if request.method == 'POST':
-        form = VideoForm(request.POST, instance=videos)
+        form = VideoForm(request.POST,request.FILES, instance=videos)
         if form.is_valid():
             video = form.save(commit=False)
                         # check existing video upload file
@@ -221,7 +221,7 @@ def video_addchapter(request):
     form = VideochapterForm()
     courseid=request.GET.get('courseid')
     if request.method == 'POST':
-        form = VideochapterForm(request.POST, request.FILES)
+        form = VideochapterForm(request.POST)
         if form.is_valid():
             chapter = form.save(commit=False)
             chapter.video_id=courseid
@@ -280,7 +280,7 @@ def video_addlesson(request):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
     if request.method == 'POST':
-        form = VideolessonForm(request.POST)
+        form = VideolessonForm(request.POST,request.FILES)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
                         # check existing video upload file
@@ -320,7 +320,7 @@ def update_lesson(request, id):
     chapterid=request.GET.get('chapterid')
     lessons= VideoLesson.objects.get(id=id)
     if request.method == 'POST':
-        form = VideolessonForm(request.POST,  instance=lessons)
+        form = VideolessonForm(request.POST,request.FILES,  instance=lessons)
         if form.is_valid():
             lesson_obj = form.save(commit=False)
             if request.FILES.get('lessonvideo'):
