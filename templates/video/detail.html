@@ -1,5 +1,5 @@
 {% extends "layout/base.html" %}
-
+{% load static %}
 {% load humanize %}
 {% block title %} Course Detail Page {% endblock %}
 {% block subnav %}
@@ -29,7 +29,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Q/R Payment</h5>
         </div>
         <div class="modal-body">
-          ...
+          <img class="qr-code" src="{% static 'img/QR_jCode.png' %}" alt="" >
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
