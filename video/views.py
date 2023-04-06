@@ -129,7 +129,7 @@ def management_course(request):
 def video_add(request):
     form = VideoForm()
     if request.method == 'POST':
-        form = VideoForm(request.POST,request.FILES,request.FILES)
+        form = VideoForm(request.POST)
         if form.is_valid():
             video = form.save(commit=False)
 
@@ -150,7 +150,7 @@ def video_add(request):
                         fs_dest.write(chunk)
                 # save media path to video url
                 video.videoexample_url = media_path
-
+            video.image = request.FILES['image']
             video.slug = slugify(video.name)
             video.member = Member.objects.filter(user_id=request.user.id).first()
             video.published = True
