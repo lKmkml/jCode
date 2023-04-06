@@ -150,7 +150,6 @@ def video_add(request):
                         fs_dest.write(chunk)
                 # save media path to video url
                 video.videoexample_url = media_path
-            video.image = request.FILES['image']
             video.slug = slugify(video.name)
             video.member = Member.objects.filter(user_id=request.user.id).first()
             video.published = True
@@ -188,7 +187,6 @@ def update_video(request, id):
                         fs_dest.write(chunk)
                 # save media path to video url
                 video.videoexample_url = media_path
-            video.image = request.FILES['image']
             video.save()
             messages.success(request, 'บันทึกสำเร็จ')
             return redirect('video:management_course')
