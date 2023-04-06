@@ -129,7 +129,7 @@ def management_course(request):
 def video_add(request):
     form = VideoForm()
     if request.method == 'POST':
-        form = VideoForm(request.POST)
+        form = VideoForm(request.POST,request.FILES)
         if form.is_valid():
             video = form.save(commit=False)
 
@@ -168,7 +168,7 @@ def video_add(request):
 def update_video(request, id):
     videos= Video.objects.get(id=id)
     if request.method == 'POST':
-        form = VideoForm(request.POST, instance=videos)
+        form = VideoForm(request.POST,request.FILES, instance=videos)
         if form.is_valid():
             video = form.save(commit=False)
                         # check existing video upload file
