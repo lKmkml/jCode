@@ -68,14 +68,14 @@
                       <tr>
                         <td style="width:50%">{{ lesson.name }}</td>
                         <td style="width:20%"><i class="far fa-clock"></i> {{ lesson.duration_time }}</td>
-                        {% if not lesson.is_locked and lesson.lessonvideo %}
+                        {% if not lesson.is_locked and lesson.video_url %}
                         <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
-                        {% elif not lesson.is_locked and not lesson.lessonvideo %}
+                        {% elif not lesson.is_locked and not lesson.video_url %}
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
                         {% elif lesson.is_locked and count_payment == 0%}
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-secondary btn-sm btn-lg" disabled><i class="fa fa-lock"></i></button></td>
                         {% elif lesson.is_locked and count_payment > 0 %}
-                          {% if lesson.lessonvideo %}
+                          {% if lesson.video_url %}
                           <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                           {% else %}
                           <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
