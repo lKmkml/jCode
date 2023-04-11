@@ -197,6 +197,16 @@ span {
 .video:hover::before{
   background-color: rgba(0, 0, 0, 0.5);
 }
+.frameresetpass{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 430px;
+  background: #ffffff;
+  border-radius: 20px;
+}
 .framesignin{
   position: absolute;
   top: 50%;
@@ -412,4 +422,6 @@ h6{
 .checked {
     color: orange;
 }
-
+.backbtn{
+    text-decoration: none;
+}

@@ -175,4 +175,26 @@ span {
 .popover-body .abc .test1{
   overflow: hidden;
 }
-
+.frameresetpass{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 430px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+.btn-reset{
+  width: 100%;
+  color: rgb(255, 255, 255);
+  background-color: #5179DC;
+  border-radius: 25px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+}
+.btn-reset:hover{
+  color: #434343;
+}

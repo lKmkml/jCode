@@ -3,7 +3,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Member
-
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import SetPasswordForm
 
 #------------------------------------------------------
 #Form การ Login ด้วย Email
@@ -42,3 +45,46 @@ class ProfileForm(forms.ModelForm):
             super(ProfileForm, self).__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
                 field.widget.attrs['class'] = 'form-control'
+
+
+class SetPasswordForm(SetPasswordForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['new_password1', 'new_password2']
+
+
+class EmailInputForm(forms.Form):
+    email = forms.EmailField(
+    label='อีเมล',
+    widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'กรอกอีเมลของคุณ',
+        'autocomplete': 'email',
+        'required': True,
+    }),
+    max_length=254,
+    )
+
+    new_password1 = forms.CharField(
+        label='รหัสผ่านใหม่',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'กรอกรหัสผ่านใหม่',
+            'autocomplete': 'new-password',
+            'required': True,
+            'pattern': '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}',
+            'title': 'รหัสผ่านต้องประกอบด้วยอักขระอย่างน้อย 8 ตัว ประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลข',
+        }),
+        # help_text='รหัสผ่านต้องประกอบด้วยอักขระอย่างน้อย 8 ตัว ประกอบด้วยตัวอักษรตัวเล็ก ตัวอักษรตัวใหญ่ และตัวเลข <br>'
+    )
+
+    new_password2 = forms.CharField(
+        label='ยืนยันรหัสผ่านใหม่',
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'กรอกรหัสผ่านใหม่อีกครั้ง',
+            'autocomplete': 'new-password',
+            'required': True,
+        }),
+    )
+

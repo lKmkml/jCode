@@ -2,6 +2,7 @@
 
 
 {% load static %}
+{% load socialaccount %}
 {% block title %} Sign in Page {% endblock %}
 
 {% block content %}
@@ -21,7 +22,7 @@
               <input type="password"  class="form-control" name="password" autocomplete="current-password" required id="id_password" placeholder="Password">
             </div>
             <div class="forgetpassword">
-              <a href="#">ลืมรหัสผ่าน</a>
+              <a href="{% url 'app:reset_password'%}">ลืมรหัสผ่าน</a>
             </div>
             {% if messages %}
             {% for message in messages %}
@@ -34,8 +35,8 @@
               ― สามารถเข้าสู่ระบบผ่าน ―
             </div>
             <div class="loginwith mt-3">
-                <a href="#"><i class="fa-brands fa-google"></i></a> &nbsp;
-                <a href="{% url 'social:begin' 'facebook' %}"><i class="fa-brands fa-facebook"></i></a> &nbsp;
+                <a href="{% provider_login_url 'google' %}"><i class="fa-brands fa-google"></i></a> &nbsp;
+                <a href="{% provider_login_url 'facebook' %}"><i class="fa-brands fa-facebook"></i></a> &nbsp;
                 <a href="#"><i class="fa-solid fa-mobile-screen-button"></i></a> &nbsp;
             </div>
                 <!-- <img class="btngoogle" src="{% static 'img/google.png' %}" alt="" >

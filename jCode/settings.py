@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sites', # New
     'sslserver',
     'star_ratings',
     'crispy_forms',
@@ -47,6 +48,14 @@ INSTALLED_APPS = [
     'social_core',
     'app',
     'video',
+    # ------------
+    # social login
+    # ------------
+    'allauth', # New
+    'allauth.account', # New
+    'allauth.socialaccount', # New
+    'allauth.socialaccount.providers.google', # New
+    'allauth.socialaccount.providers.facebook', # new
 ]
 
 MIDDLEWARE = [
@@ -89,23 +98,23 @@ WSGI_APPLICATION = 'jCode.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'root',
-        'PASSWORD': 'APPc0de@2018y',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mydatabase',
+#         'USER': 'root',
+#         'PASSWORD': 'APPc0de@2018y',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -160,31 +169,87 @@ VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
 # test
 # VIDEO_SERVER_URL = 'http://192.168.1.102:5000/video?videoname='
 
-SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
-SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
+# SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
+# SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '581497689095-a8c76nhcj55gu8kiqb7sspb58bfa7iet.apps.googleusercontent.com'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+# # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '581497689095-a8c76nhcj55gu8kiqb7sspb58bfa7iet.apps.googleusercontent.com'
+# # SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/video'
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/accounts/login/'
+# LOGIN_URL = 'login'
+# LOGIN_REDIRECT_URL = 'home'
+# LOGOUT_URL = 'logout'
+# LOGOUT_REDIRECT_URL = 'login'
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.facebook.FacebookOAuth2',
-    'app.loginemail.EmailBackend',
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL='http'
+
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.user.get_username',
+#     'social_core.pipeline.social_auth.associate_by_email',
+#     'social_core.pipeline.user.create_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details',
+# )
+
+# SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
+#     ('name', 'name'),
+#     ('email', 'email'),
+#     ('picture', 'picture'),
+#     ('link', 'profile_url'),
+# ]
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'app.loginemail.EmailBackend',
 
 
-]
+# ]
 
-# Facebook configuration
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-    'fields': 'id, name, email'
-}
+# # Facebook configuration
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#     'fields': 'id, name, email'
+# }
 
 # Google configuration
 # SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', 'profile']
 # SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
 #     'access_type': 'offline'
 # }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 's6206022610084@email.kmutnb.ac.th'
+EMAIL_HOST_PASSWORD = '17112543'
+
+
+# ------------
+# social login
+# ------------
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'app.loginemail.EmailBackend',
+)
+
+SITE_ID = 3
+LOGIN_REDIRECT_URL = '/'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

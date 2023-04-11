@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block title %} About Me {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center;"><b>เกี่ยวกับเรา</b></h3>
+        <h5 style="float: left;"><a href="{% url 'video:index' %}" style="text-decoration: none;"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+    </div>
+    {% for i in img %}
+    <div class="card card-Banner mb-4">
+      <img class="Banner" src="{% static 'img/About' %}{{ i }}.png" alt="" style="width: 100%; height: auto;">
+    </div>
+    {% endfor %}
+</div>
+{% endblock%}

@@ -35,7 +35,7 @@
               รับชมล่าสุด :
               <ul>
                 {% for lt in l.list %}
-                <li><a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}?visit_id={{ lt.lesson.id }}&visit_url={{ lt.lesson.lessonvideo.url }}">{{ lt.lesson.name }}</a>  <span class="small ms-lg-2" style="color: #999">[ {{lt.activity_time|date:'d/M/Y H:i'}} ]</span></li>
+                <li><a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}?visit_id={{ lt.lesson.id }}&visit_url={{ lt.lesson.video_url }}">{{ lt.lesson.name }}</a>  <span class="small ms-lg-2" style="color: #999">[ {{lt.activity_time|date:'d/M/Y H:i'}} ]</span></li>
                 {% endfor %}
               </ul>
             </div>

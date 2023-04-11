@@ -21,7 +21,7 @@ import subprocess
 
 
 def index(request):
-    video = Video.objects.filter(published=True)
+    video = Video.objects.filter(published=True).order_by('name')
     categ_id = request.GET.get('categoryid')
     subcateg_id = request.GET.get('subcategoryid')
     if categ_id:

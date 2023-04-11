@@ -1,0 +1,40 @@
+
+{% if payment %}
+
+<div class="container">
+    <div class="row">
+        <h3 style="text-align: center;"><b>สรุปรายได้</b></h3>
+        <h7 style="text-align: center;">ตั้งแต่วันที่ ถึง</h7>
+        <h5 style="float: left;"><a href="{% url 'video:index' %}" style="text-decoration: none;"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+        <div class="col-lg-8 offset-lg-2">
+           <table class="table-colored my-4" border="1">
+            <tr>
+              <th>ลำดับ</th>
+              <th>รายการ</th>
+              <th>จำนวนเงิน</th>
+            </tr>
+
+            {% for i in payment %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ i.video__name}}</td>
+              <td>{{ i.total_payment}}</td>
+            </tr>
+
+            {% endfor %}
+
+
+
+          </table>
+          <div style="text-align: right;">รวมเป็นเงิน {{total_payment}}<br>
+            หัก ค่าธรรมนเนียมนเว็บไซต์ {{fee}}<br>
+            จำนวนเงินรวมทั้งสิ้น {{total_fee}}
+
+          </div>
+
+
+          </div>
+        </div>
+      </div>
+{% endif %}
+
