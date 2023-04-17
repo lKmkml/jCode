@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'social_django',
     'social_core',
+    'wkhtmltopdf',
     'app',
     'video',
     # ------------
@@ -250,6 +251,20 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
-        }
+        },
+        "APP": {
+            "client_id": '684625158779-dars436078lb1osj3homo2s7o9km41f3.apps.googleusercontent.com',
+            "secret": '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',
+        },
+    },
+    'facebook': {
+        'SCOPE': [
+            'email',
+        ],
+        'FIELDS': ['email', 'first_name', 'last_name'],
+        'APP': {
+            'client_id': '1641470469635785',
+            'secret': '24e9c60682a14e164b3db3654e397589',
+        },
     }
 }

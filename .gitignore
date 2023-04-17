@@ -1,6 +1,9 @@
 *.pyc
 *.egg
 *.log
+*.mkv
+*.mp4
+*.mov
 .idea
 .vscode
 .DS_Store

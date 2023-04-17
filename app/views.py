@@ -12,6 +12,8 @@ from django.db.models import Sum
 import random
 from django.core.mail import EmailMessage
 from django.utils.dateparse import parse_date
+from django.contrib.auth.decorators import login_required
+from wkhtmltopdf.views import PDFTemplateView
 
 #Landing page
 def index(request):
@@ -213,6 +215,7 @@ def reset_password_confirm(request):
     user.save()
     return JsonResponse({'results': 'ok'})
 
+@login_required
 def payment_list(request):
     user = request.user
     payment = Payment.objects.filter(video__member__user=user)
@@ -234,6 +237,27 @@ def payment_list(request):
     return render(request, 'account/profit.html', context)
 
 
+class MyPDF(PDFTemplateView):
+    def get_context_data(self, **kwargs):
+        context = super(MyPDF, self).get_context_data(**kwargs)
+        user = self.request.user
+        payment = Payment.objects.filter(video__member__user=user)
+
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        if start_date and end_date:
+            start_date = parse_date(start_date)
+            end_date = parse_date(end_date)
+            payment = payment.filter(payment_date__range=[start_date, end_date])
+
+        payments = payment.values('video__name') \
+                        .annotate(total_payment=Sum('payment_amount'))
+
+        total_payment = payment.aggregate(total=Sum('payment_amount'))['total']
+        fee= total_payment * 5 /100
+        total_fee = total_payment-fee
+        context={'payment': payments,'total_payment': total_payment,'fee':fee,'total_fee':total_fee,'start_date':start_date,'end_date':end_date}
+        return context
 
 
 

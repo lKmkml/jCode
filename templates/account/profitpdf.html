@@ -1,13 +1,29 @@
-
-{% if payment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      font-size: 11pt;
+      font-family: "Tahoma",sans-serif;
+    }
+    .table-colored{
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  {% if payment %}
 
 <div class="container">
     <div class="row">
         <h3 style="text-align: center;"><b>สรุปรายได้</b></h3>
-        <h7 style="text-align: center;">ตั้งแต่วันที่ ถึง</h7>
-        <h5 style="float: left;"><a href="{% url 'video:index' %}" style="text-decoration: none;"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+        <h7 style="text-align: center;">ตั้งแต่วันที่ {{start_date}} ถึง {{end_date}}</h7>
         <div class="col-lg-8 offset-lg-2">
-           <table class="table-colored my-4" border="1">
+           <table class="table-colored" border="1">
             <tr>
               <th>ลำดับ</th>
               <th>รายการ</th>
@@ -37,4 +53,7 @@
         </div>
       </div>
 {% endif %}
+</body>
+</html>
+
 

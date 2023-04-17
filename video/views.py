@@ -13,6 +13,10 @@ from django.conf import settings
 from slugify import slugify
 from django.contrib.auth.models import User
 import subprocess
+from django.contrib.auth.decorators import login_required
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
 #------------------------------------------------------
@@ -72,7 +76,7 @@ class VideoDetailView(DetailView):
 #payment Course
 #------------------------------------------------------
 
-
+@login_required
 def payment(request, slug):
     if request.user.is_authenticated:
         video = Video.objects.filter(slug=slug).first()
@@ -120,12 +124,14 @@ def visit(request):
 
 
 #Show Course
+@login_required
 def management_course(request):
     videos = Video.objects.filter(member__user=request.user.id)
     return render(request,'video/course/course.html',{"video_list":videos})
 
 
 #Add Course
+@login_required
 def video_add(request):
     form = VideoForm()
     if request.method == 'POST':
@@ -164,6 +170,7 @@ def video_add(request):
 
 
 #Edit Course
+@login_required
 def update_video(request, id):
     videos= Video.objects.get(id=id)
     if request.method == 'POST':
@@ -196,6 +203,7 @@ def update_video(request, id):
 
 
 #Delete Course
+@login_required
 def video_delete(request, id):
     videos = Video.objects.get(id=id)
     videos.delete()
@@ -209,6 +217,7 @@ def video_delete(request, id):
 
 
 #Show Chapter
+@login_required
 def management_chapter(request):
     courseid=request.GET.get('courseid')
     chapters = VideoChapter.objects.filter(video__id=courseid)
@@ -216,6 +225,7 @@ def management_chapter(request):
 
 
 #Add Chapter
+@login_required
 def video_addchapter(request):
     form = VideochapterForm()
     courseid=request.GET.get('courseid')
@@ -236,6 +246,7 @@ def video_addchapter(request):
 
 
 #Edit Chapter
+@login_required
 def update_chapter(request, id):
     courseid=request.GET.get('courseid')
     chapters= VideoChapter.objects.get(id=id)
@@ -251,6 +262,7 @@ def update_chapter(request, id):
 
 
 #Delete Chapter
+@login_required
 def chapter_delete(request, id):
     courseid=request.GET.get('courseid')
     chaptervideo = VideoChapter.objects.get(id=id)
@@ -266,6 +278,7 @@ def chapter_delete(request, id):
 
 
 #Show Lesson
+@login_required
 def management_lesson(request):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
@@ -274,6 +287,7 @@ def management_lesson(request):
 
 
 #Add Lesson
+@login_required
 def video_addlesson(request):
     form = VideolessonForm()
     courseid=request.GET.get('courseid')
@@ -313,7 +327,17 @@ def video_addlesson(request):
     })
 
 
+def format_duration_time(duration, extension):
+    """
+    Format duration time from seconds to HH:MM:SS format.
+    """
+    minutes, seconds = divmod(duration, 60)
+    hours, minutes = divmod(minutes, 60)
+    return '{:02d}:{:02d}:{:02d}.{}'.format(hours, minutes, seconds, extension)
 #Edit Lesson
+
+@login_required
+
 def update_lesson(request, id):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
@@ -326,7 +350,10 @@ def update_lesson(request, id):
                 BASE_DIR = Path(__file__).resolve().parent.parent
                 video_file = request.FILES['lessonvideo']
 
+
                 file_name, file_extension = os.path.splitext(video_file.name)
+
+
                 upload_file_name = '{0}{1}'.format(uuid.uuid1(), file_extension)
                 upload_file_media = '/media/video/lesson/video/'
 
@@ -337,9 +364,29 @@ def update_lesson(request, id):
                     for chunk in video_file.chunks():
                         fs_dest.write(chunk)
                 # save media path to video url
+
                 lesson_obj.video_url = media_path
+                default_storage.save(media_path, ContentFile(video_file.read()))
+
+                # get video duration
+                try:
+                    import cv2
+                    video = cv2.VideoCapture(default_storage.path(media_path))
+                    fps = video.get(cv2.CAP_PROP_FPS)
+                    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+                    duration = frame_count / fps
+                    video.release()
+                except:
+                    # fallback method to get duration using ffmpeg
+                    import subprocess
+                    cmd = 'ffprobe -i {} -show_entries format=duration -v quiet -of csv="p=0"'.format(default_storage.path(media_path))
+                    duration = float(subprocess.check_output(cmd, shell=True))
+
+                # update lesson_obj duration_time
+                lesson_obj.duration_time = str(timedelta(seconds=duration))
             lesson_obj.videos_id=courseid
             lesson_obj.chapter_id=chapterid
+            lesson_obj.save()
             form.save()
             messages.success(request, 'แก้ไขสำเร็จ')
             return redirect(reverse('video:management_lesson')+'?courseid='+str(courseid)+'&chapterid='+str(chapterid))
@@ -353,6 +400,7 @@ def update_lesson(request, id):
 
 
 #Delete Lesson
+@login_required
 def lesson_delete(request, id):
     courseid=request.GET.get('courseid')
     chapterid=request.GET.get('chapterid')
@@ -364,6 +412,7 @@ def lesson_delete(request, id):
 
 
 # Rating video
+@login_required
 def rating_video(request, video_id, rating):
     # print('********* rating33333 **************')
     # print('request.user.id=', request.user.id)

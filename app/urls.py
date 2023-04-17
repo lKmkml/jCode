@@ -18,5 +18,6 @@ urlpatterns = [
     path("reset_password/", views.reset_password, name="reset_password"),
     path("reset_password/validate/",views.reset_password_validate,name='reset_password_validate'),
     path("reset_password/confirm/",views.reset_password_confirm,name='reset_password_confirm'),
-
+    path('pdf/', views.MyPDF.as_view(template_name='account/profitpdf.html',
+                                             filename='my_pdf.pdf'), name='pdf'),
 ]
