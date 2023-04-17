@@ -30,21 +30,31 @@
             {% endfor %}
             {% endif %}
             <button type="submit" name="login_button" class="btn btn-signin mt-2">เข้าสู่ระบบ</button>
+          </form>
             <div class="mt-2" style="text-align: center; font-size: 14px;">
               <i class="fa-thin fa-hyphen"></i>
               ― สามารถเข้าสู่ระบบผ่าน ―
             </div>
             <div class="loginwith mt-3">
-                <a href="{% provider_login_url 'google' %}"><i class="fa-brands fa-google"></i></a> &nbsp;
-                <a href="{% provider_login_url 'facebook' %}"><i class="fa-brands fa-facebook"></i></a> &nbsp;
-                <a href="#"><i class="fa-solid fa-mobile-screen-button"></i></a> &nbsp;
+              <form action="/accounts/google/login/" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="padding: 0;border: 0;color: #5179DC;margin-right: 5px;"><i class="fa-brands fa-google"></i></button>
+              </form>
+              <form action="/accounts/facebook/login/" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="padding: 0;border: 0;color: #5179DC;margin-right: 5px;"><i class="fa-brands fa-facebook"></i></button>
+              </form>
+              <a href="#" style="display: inline;"></a><i class="fa-solid fa-mobile-screen-button" style="color: #5179DC !important;"></i></a> &nbsp;
             </div>
+
                 <!-- <img class="btngoogle" src="{% static 'img/google.png' %}" alt="" >
                 <div class="loginwith" >
                   <img src="{% static 'img/google.png' %}" alt="" >
                 </div>-->
 
-        </form>
+
+
+
     </div>
   </div>
       <div class="signuplink-footer mt-3">

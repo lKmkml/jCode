@@ -13,6 +13,11 @@ import random
 from django.core.mail import EmailMessage
 from django.utils.dateparse import parse_date
 from django.contrib.auth.decorators import login_required
+from django.dispatch import receiver
+from social_django.models import UserSocialAuth
+from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+
 from wkhtmltopdf.views import PDFTemplateView
 
 #Landing page
@@ -36,13 +41,11 @@ def login_view(request):
             login(request,user)
             return redirect('app:index')
         messages.error(request, 'ไม่ถูกต้อง')
-
     else:
         form = EmailAuthenticationForm()
     return render(request,'account/login.html',{
             'form':form
         })
-
 
 #------------------------------------------------------
 #Logout
