@@ -46,7 +46,7 @@
           {% if video.videoexample_url %}
           <video id="videoplayer" controls width="100%" height="400">
 
-            <source src="{{ip}}{{video.videoexample_url}}" type="video/mp4" >
+            <source src="{{ip}}{{video.videoexample_url}}&token={{token}}" type="video/mp4" >
             Your browser does not support HTML5 video.
           </video>
           {% endif %}
@@ -69,6 +69,7 @@
                         <td style="width:50%">{{ lesson.name }}</td>
                         <td style="width:20%"><i class="far fa-clock"></i> {{ lesson.duration_time }}</td>
                         {% if not lesson.is_locked and lesson.video_url %}
+                        {{ip}}{{lesson.video_url}}
                         <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                         {% elif not lesson.is_locked and not lesson.video_url %}
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
@@ -76,6 +77,7 @@
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-secondary btn-sm btn-lg" disabled><i class="fa fa-lock"></i></button></td>
                         {% elif lesson.is_locked and count_payment > 0 %}
                           {% if lesson.video_url %}
+                          {{ip}}{{lesson.video_url}}
                           <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                           {% else %}
                           <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
@@ -192,7 +194,7 @@ const rate = (rating, post_id) => {
         success: function(data) {
           // ต้องบันทึกกิจกรรมเรียบร้อยก่อน จึงเล่นวีดีโอนี้
           var video = $('#videoplayer')[0];
-          video.src = video_url;
+          video.src = video_url + '&token=' + data.token;
           video.load();
           video.play();
         }

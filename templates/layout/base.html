@@ -153,17 +153,15 @@
         data: { 'lesson_id': lesson_id },
         success: function(data) {
           console.log(data.results);
-
+          console.log(data.token);
           // ต้องบันทึกกิจกรรมเรียบร้อยก่อน จึงเล่นวีดีโอนี้
-
           var video = $('#videoplayer')[0];
-          video.src = video_url;
+          video.src = video_url + '&token=' + data.token;
+          console.log(video.src);
           video.load();
           video.play();
         }
       });
-
-
 
     });
   });

@@ -1,26 +1,50 @@
+import random
+import jwt
+import time
+from datetime import datetime, timedelta
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.utils.dateparse import parse_date
+from django.contrib import messages
+from django.contrib.auth import get_user_model,login,logout,authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.models import AbstractUser,User
+from django.dispatch import receiver
+from django.db.models import Sum,Q
+from django.db.models.signals import post_save
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
-from django.contrib.auth import login,logout,authenticate
-from django.contrib.auth.models import AbstractUser,User
+from django.views.decorators.http import require_GET
+from social_django.models import UserSocialAuth
+from wkhtmltopdf.views import PDFTemplateView
+from allauth.account.adapter import DefaultAccountAdapter
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from allauth.socialaccount.models import SocialAccount
 from video.models import Video,VideoLesson,Member,Avg,Payment
 from .models import Category,CategorySub,UserActivity
 from .forms import EmailAuthenticationForm,SignUpForm,ProfileForm,SetPasswordForm,EmailInputForm
-from django.contrib import messages
-from datetime import datetime
-from django.db.models import Sum
-import random
-from django.core.mail import EmailMessage
-from django.utils.dateparse import parse_date
-from django.contrib.auth.decorators import login_required
-from django.dispatch import receiver
-from social_django.models import UserSocialAuth
-from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save
 
-from wkhtmltopdf.views import PDFTemplateView
 
+
+# ------------------------------------
+# Handle login from Facebook or Google
+# ------------------------------------
+class UserAccountAdapter(DefaultSocialAccountAdapter):
+    def save_user(self, request, user, form, commit=True):
+        user = super(UserAccountAdapter, self).save_user(request, user, form)
+        user.save()
+        username = user.email.split('@')[0]
+        member = Member.objects.filter(user_code=username).first()
+        if not member:
+            member = Member(user=user,user_code=username)
+            member.save()
+
+
+# -----------
 #Landing page
+# -----------
 def index(request):
     video = Video.objects.filter(published=True).annotate(avg_rating=Avg('rating__rating')).order_by('-avg_rating')[:4]
     video_new = Video.objects.filter(published=True).order_by('-created')[:4]
@@ -32,7 +56,6 @@ def index(request):
 #Login with email
 #------------------------------------------------------
 
-
 def login_view(request):
     if request.method == 'POST':
         form = EmailAuthenticationForm(data=request.POST)
@@ -40,16 +63,18 @@ def login_view(request):
             user = form.get_user()
             login(request,user)
             return redirect('app:index')
-        messages.error(request, 'ไม่ถูกต้อง')
+        messages.error(request, 'อีเมลหรือรหัสผ่าน ไม่ถูกต้อง!')
     else:
         form = EmailAuthenticationForm()
     return render(request,'account/login.html',{
             'form':form
         })
 
+
 #------------------------------------------------------
 #Logout
 #------------------------------------------------------
+
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
@@ -59,7 +84,6 @@ def logout_view(request):
 #------------------------------------------------------
 #Sign up from email and save member default
 #------------------------------------------------------
-
 
 def signup_view(request):
     if request.method == 'POST':
@@ -72,17 +96,19 @@ def signup_view(request):
             user.save()
             member = Member(user=user,user_code=username)
             member.save()
+            messages.success(request, 'สมัครสมาชิกสำเร็จ')
             return redirect('app:login')
+        messages.error(request, 'รหัสผ่านควรมีความยาว 8 ตัวอักษรขึ้นไป พิมพ์ใหญ่และตัวเลข!')
     else:
         form = SignUpForm()
     return render(request,'account/signup.html',{
             'form':form
         })
 
+
 #------------------------------------------------------
 #edit profile // Member models
 #------------------------------------------------------
-
 
 def profile_management(request):
     profile=Member.objects.filter(user_id=request.user.id).first()
@@ -109,7 +135,6 @@ def profile_management(request):
 #Search page (default)
 #------------------------------------------------------
 
-
 def search_video(request):
     txt_search = request.POST.get('txtSearch')
     video_list = Video.objects.filter(name__contains=txt_search,published=True)
@@ -119,10 +144,6 @@ def search_video(request):
 #------------------------------------------------------
 #Search autocomplete
 #------------------------------------------------------
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-from django.db.models import Q
-
 
 @require_GET
 def video_autocomplete(request):
@@ -133,12 +154,31 @@ def video_autocomplete(request):
     return JsonResponse({'results': list(results)})
 
 
-# บันทึกกิจกรรมว่า user ดู video อะไรอยู่
+#---------------------
+# save user activities
+#---------------------
+
 def video_activity(request):
     lesson_id = request.GET.get('lesson_id')
     user_id = request.user.id
+    payload = {'user_id': user_id, 'lesson_id': lesson_id}
+    expiration_time = datetime.now() + timedelta(hours=6)
+    payload['exp'] = int(expiration_time.timestamp())
+
+    key = settings.SECRET_KEY
+    encoded_token = jwt.encode(payload, key, algorithm='HS256')
     if request.user.is_authenticated:
         act_obj = UserActivity.objects.filter(lesson_id=lesson_id,user_id=user_id)
+        # ---------------------
+        #  decode token section
+        # ---------------------
+        # Wait for 15 seconds to simulate the token expiring
+        # time.sleep(10)
+        # try:
+        #     decoded_token = jwt.decode(encoded_token, key, algorithms=['HS256'])
+        #     print(decoded_token)
+        # except jwt.ExpiredSignatureError:
+        #     print('Token has expired')s
         if act_obj:
             # update
             # act_obj = UserActivity.objects.filter(lesson_id=lesson_id,user_id=user_id).first()
@@ -153,7 +193,8 @@ def video_activity(request):
             act_obj.activity_name = "View video lesson {0}".format(lesson_id)
             act_obj.activity_time = datetime.now()
             act_obj.save()
-    return JsonResponse({'results': 'success'})
+
+    return JsonResponse({'results': 'success', 'token': encoded_token})
 
 
 def about_me(request):
@@ -161,6 +202,7 @@ def about_me(request):
     for i in range (1,3):
         img_num.append(i)
     return render(request,'about_me.html',{'img':img_num})
+
 
 def how_to(request):
     img_num=[]
@@ -192,7 +234,6 @@ def reset_password_validate(request):
     new_password1 = request.GET.get('new_password1')
     new_password2 = request.GET.get('new_password2')
 
-
     random_int = random.randint(10000, 99999)
     subject= 'Code reset password'
     body = '''Your generated is <br> {0} '''.format(random_int)
@@ -203,6 +244,7 @@ def reset_password_validate(request):
 
     print('random_int=', random_int)
     return JsonResponse({'results': 'ok', 'random_int': random_int})
+
 
 def reset_password_confirm(request):
     print('reset_password_confirm')
@@ -217,6 +259,7 @@ def reset_password_confirm(request):
     user.set_password(new_password1)
     user.save()
     return JsonResponse({'results': 'ok'})
+
 
 @login_required
 def payment_list(request):
@@ -261,6 +304,3 @@ class MyPDF(PDFTemplateView):
         total_fee = total_payment-fee
         context={'payment': payments,'total_payment': total_payment,'fee':fee,'total_fee':total_fee,'start_date':start_date,'end_date':end_date}
         return context
-
-
-

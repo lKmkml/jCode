@@ -425,3 +425,12 @@ h6{
 .backbtn{
     text-decoration: none;
 }
+.img {
+  width:80%;
+  z-index: 0;
+}
+.text-over-img {
+  z-index:1;
+  font-size: 1.2em;
+  margin-top: -100px;
+  }

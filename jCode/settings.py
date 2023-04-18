@@ -141,7 +141,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bangkok'
 
 USE_I18N = True
 
@@ -166,9 +166,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
+# VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
 # test
-# VIDEO_SERVER_URL = 'http://192.168.1.102:5000/video?videoname='
+VIDEO_SERVER_URL = 'http://192.168.1.7:5000/video?videoname='
 
 # SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
 # SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
@@ -268,3 +268,5 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
+
+SOCIALACCOUNT_ADAPTER = 'app.views.UserAccountAdapter'

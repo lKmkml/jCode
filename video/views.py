@@ -1,5 +1,9 @@
+import random
+import jwt
+import time
 import uuid
 import os
+from datetime import datetime, timedelta
 from pathlib import Path
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import ListView, DetailView
@@ -67,8 +71,14 @@ class VideoDetailView(DetailView):
             video = Video.objects.filter(slug=slug).first()
             member = Member.objects.filter(user_id=self.request.user.id).first()
             count_obj = Payment.objects.filter(member_id=member.id, video_id=video.id).count()
+        payload = {'user_id': "", 'lesson_id': ""}
+        expiration_time = datetime.now() + timedelta(days=15)
+        payload['exp'] = int(expiration_time.timestamp())
 
+        key = settings.SECRET_KEY
+        encoded_token = jwt.encode(payload, key, algorithm='HS256')
         context['count_payment'] = count_obj
+        context['token']= encoded_token
         return context
 
 
@@ -363,27 +373,7 @@ def update_lesson(request, id):
                 with open(absolute_path, 'wb+') as fs_dest:
                     for chunk in video_file.chunks():
                         fs_dest.write(chunk)
-                # save media path to video url
 
-                lesson_obj.video_url = media_path
-                default_storage.save(media_path, ContentFile(video_file.read()))
-
-                # get video duration
-                try:
-                    import cv2
-                    video = cv2.VideoCapture(default_storage.path(media_path))
-                    fps = video.get(cv2.CAP_PROP_FPS)
-                    frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
-                    duration = frame_count / fps
-                    video.release()
-                except:
-                    # fallback method to get duration using ffmpeg
-                    import subprocess
-                    cmd = 'ffprobe -i {} -show_entries format=duration -v quiet -of csv="p=0"'.format(default_storage.path(media_path))
-                    duration = float(subprocess.check_output(cmd, shell=True))
-
-                # update lesson_obj duration_time
-                lesson_obj.duration_time = str(timedelta(seconds=duration))
             lesson_obj.videos_id=courseid
             lesson_obj.chapter_id=chapterid
             lesson_obj.save()

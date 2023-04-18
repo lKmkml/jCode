@@ -21,11 +21,13 @@
         <div class="row">
           <div class="col-lg-3">
             <a href="{% url 'video:detail' slug=l.list.0.lesson.videos.slug %}?visit_id={{ l.list.0.lesson.id }}">
+              {% if l.list.0.lesson.videos.image %}
             <div class="video-box" style="background-image: url('{{l.list.0.lesson.videos.image.url}}');background-size: cover;background-position: center;">
               <div class="video-player">
                 <i class="fa fa-circle-play fa-4x"></i>
               </div>
             </div>
+            {% endif %}
             </a>
           </div>
           <div class="col-lg-9">
