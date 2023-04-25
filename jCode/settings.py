@@ -109,7 +109,7 @@ WSGI_APPLICATION = 'jCode.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
+        'NAME': 'jcode',
         'USER': 'root',
         'PASSWORD': 'APPc0de@2018y',
         'HOST': '127.0.0.1',
