@@ -121,8 +121,8 @@ class Payment(models.Model):
     payment_by = models.CharField(max_length=450,default="Cash")
     payment_amount = models.FloatField()
 
-
     def __str__(self):
-        return self.video
-
-
+        if self.video :
+            return self.video.name
+        else:
+            return ''

@@ -3,9 +3,3 @@ python-slugify
 django-crispy-forms
 social-auth-app-django
 django-star-ratings
-django-sslserver
-social-auth-app-django
-django-wkhtmltopdf
-wkhtmltopdf
-moviepy
-psycopg2-binary
