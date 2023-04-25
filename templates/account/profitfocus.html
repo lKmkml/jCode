@@ -1,0 +1,50 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block title %} About Me {% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        {% for i in payments %}
+        <h3 style="text-align: center;"><b>สรุปรายได้ของคอร์สเรียน <br>{{ i.video__name}}</b></h3>
+        {% endfor %}
+        <h7 style="text-align: center;">ตั้งแต่วันที่  {{start_date}} ถึง {{end_date}}</h7>
+        <h5 style="float: left;"><a href="{% url 'app:profit' %}" style="text-decoration: none;"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
+        <div class="col-lg-8 offset-lg-2">
+
+
+          {% if payment %}
+
+           <table class="table-colored my-4" border="1">
+            <tr>
+              <th>ลำดับ</th>
+              <th>ชื่อผู้ใช้</th>
+              <th>เวลาที่ซื้อ</th>
+            </tr>
+
+            {% for i in payment %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ i.member }}</a></td>
+              <td>{{ i.payment_date }}</td>
+            </tr>
+
+            {% endfor %}
+
+
+
+          </table>
+          <div style="text-align: right;">รวมเป็นเงิน {{total_payment}}<br>
+            หัก ค่าธรรมนเนียมนเว็บไซต์ {{fee}}<br>
+            จำนวนเงินรวมทั้งสิ้น {{total_fee}}
+
+          </div>
+          {% endif %}
+
+          </div>
+        </div>
+      </div>
+
+{% endblock%}

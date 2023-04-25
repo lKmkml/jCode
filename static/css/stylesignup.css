@@ -1,6 +1,7 @@
 body{
   font-size: 15px;
   background-color: #D6E1F9;
+  font-weight: 300;
   font-family: 'Kanit', sans-serif;
 }
 .navbar-nav .nav-item .nav-link{
@@ -85,6 +86,9 @@ h2{
 .dropdown-menu > li:hover > .dropdown-submenu {
   display: block;
   }
+.dropdown-item{
+    font-weight: 300;
+  }
 .dropdown-item:hover {
   background-color: #5179DC;
   color: #FFF;
@@ -147,16 +151,12 @@ span {
   color: #838383;
 }
 .btn-pophover{
-  width: 15px;
-  height: 25px;
-  background-color: rgb(192, 192, 192);
   color: rgb(0, 0, 0);
-  border-radius: 50px;
   text-align: center;
 }
-.btn-pophover:hover{
+/* .btn-pophover:hover{
   background-color: #a4baf3;
-}
+} */
 .popover-custom-arrow .arrow-custom {
   border-right: 6px solid transparent;
   border-left: 6px solid transparent;
@@ -197,4 +197,54 @@ span {
 }
 .btn-reset:hover{
   color: #434343;
+}
+.profile_img img{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+.btn-profile{
+  color: rgb(255, 255, 255);
+  background-color: #5179DC;
+  border-radius: 30px;
+}
+.btn-profile:hover{
+  color: rgb(255, 255, 255);
+  background-color: #3c68d9;
+  transition: all 0.3s ease-in-out;
+}
+.password-field {
+  position: relative;
+}
+.password-tooltip {
+  position: absolute;
+  top: 10px;
+  right: -25px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.password-tooltip:hover + .password-tooltip-content {
+  display: block;
+}
+
+.password-tooltip-content {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: -80px;
+  width: 200px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  font-size: 12px;
+  line-height: 1.5;
 }

@@ -1,16 +1,23 @@
 {% extends "layout/base.html" %}
 {% load static %}
 {% load humanize %}
-{% block title %} Course Detail Page {% endblock %}
+{% block title %} {{ video.name }} {% endblock %}
 {% block subnav %}
 <div class="subnav_new">
   <div class="container">
     <div class="float-end mt-2">
-      {% if count_payment == 0 %}
-      <h1>฿ {{ video.price|floatformat:0|intcomma }} </h1>
-      {% elif count_payment > 0 %}
-      <h1>฿ {{ video.price|floatformat:0|intcomma }} </h1>
+      {% if count_payment == 0 and video.price_before %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }}  <div class ="float-end" style="font-size: 20px;color: white;text-decoration: line-through red;"> ฿ {{video.price_before|floatformat:0|intcomma }} </div></h1>
+      {% elif count_payment > 0 and video.price_before %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }}  <div class ="float-end" style="font-size: 20px;color: white;text-decoration: line-through red;"> ฿ {{video.price_before|floatformat:0|intcomma }} </div></h1>
       <i class="fa-sharp fa-solid fa-circle-check"></i> ชำระเงินแล้ว
+      {% elif count_payment == 0 and not video.price_before %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }}  </h1>
+      {% elif count_payment > 0 and  not video.price_before %}
+      <h1>฿ {{ video.price|floatformat:0|intcomma }}  </h1>
+      <i class="fa-sharp fa-solid fa-circle-check"></i> ชำระเงินแล้ว
+
+
       {% endif %}
     </div>
 
@@ -45,7 +52,6 @@
         <div class="mb-5">
           {% if video.videoexample_url %}
           <video id="videoplayer" controls width="100%" height="400">
-
             <source src="{{ip}}{{video.videoexample_url}}&token={{token}}" type="video/mp4" >
             Your browser does not support HTML5 video.
           </video>
@@ -67,9 +73,10 @@
                     {% for lesson in chapter.list %}
                       <tr>
                         <td style="width:50%">{{ lesson.name }}</td>
+                        {% if lesson.duration_time %}
                         <td style="width:20%"><i class="far fa-clock"></i> {{ lesson.duration_time }}</td>
+                        {% endif %}
                         {% if not lesson.is_locked and lesson.video_url %}
-                        {{ip}}{{lesson.video_url}}
                         <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                         {% elif not lesson.is_locked and not lesson.video_url %}
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
@@ -77,14 +84,11 @@
                         <td style="width:30%" class="text-end"><button type="button" class="btn btn-secondary btn-sm btn-lg" disabled><i class="fa fa-lock"></i></button></td>
                         {% elif lesson.is_locked and count_payment > 0 %}
                           {% if lesson.video_url %}
-                          {{ip}}{{lesson.video_url}}
                           <td style="width:30%" class="text-end"><button videourl='{{ip}}{{lesson.video_url}}' videolessionid="{{lesson.id}}" class="btn btn-warning btn-sm btn-play"><i class="far fa-circle-play"></i> เล่นวิดีโอ</button></td>
                           {% else %}
                           <td style="width:30%" class="text-end"><button type="button" class="btn btn-warning btn-sm btn-play" disabled><i class="far fa-circle-play"></i> วีดีโอไม่พร้อมใช้งาน</button></td>
                           {% endif %}
                         {% endif %}
-
-
                       </tr>
                       {% endfor %}
 
@@ -125,9 +129,10 @@
         </div>
 
         <!-- place Disqus comment here -->
+        <h5>Comments</h5>
         <div class="card mb-5">
           <div class="card-body">
-            11
+            (ไม่มีคอมเม้นต์)
           </div>
         </div>
       </div>
@@ -166,6 +171,7 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://vjs.zencdn.net/8.0.4/video.min.js"></script>
 <script>
 const rate = (rating, post_id) => {
             fetch(`/video/rate/${post_id}/${rating}/`, {
@@ -204,4 +210,5 @@ const rate = (rating, post_id) => {
 
 
 </script>
+
 {% endblock %}

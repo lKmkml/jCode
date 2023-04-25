@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.utils.dateparse import parse_date
 from django.contrib import messages
-from django.contrib.auth import get_user_model,login,logout,authenticate
+from django.contrib.auth import get_user_model,login,logout,authenticate,update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.models import AbstractUser,User
@@ -24,7 +24,7 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.socialaccount.models import SocialAccount
 from video.models import Video,VideoLesson,Member,Avg,Payment
 from .models import Category,CategorySub,UserActivity
-from .forms import EmailAuthenticationForm,SignUpForm,ProfileForm,SetPasswordForm,EmailInputForm
+from .forms import EmailAuthenticationForm,SignUpForm,ProfileForm,CustomPasswordChangeForm,EmailInputForm
 
 
 
@@ -46,9 +46,10 @@ class UserAccountAdapter(DefaultSocialAccountAdapter):
 #Landing page
 # -----------
 def index(request):
-    video = Video.objects.filter(published=True).annotate(avg_rating=Avg('rating__rating')).order_by('-avg_rating')[:4]
-    video_new = Video.objects.filter(published=True).order_by('-created')[:4]
-    context = {'video_list':video,'videonew_list':video_new}
+    video = Video.objects.filter(published=True).annotate(avg_rating=Avg('rating__rating')).order_by('avg_rating')[:4]
+    video_new1 = Video.objects.filter(published=True).order_by('-created')[0:4]
+    video_new2 = Video.objects.filter(published=True).order_by('-created')[4:8]
+    context = {'video_list':video,'videonew_list1':video_new1,'videonew_list2':video_new2}
     return render(request,'index.html',context)
 
 
@@ -62,7 +63,8 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request,user)
-            return redirect('app:index')
+            next_url = request.GET.get('next', reverse('app:index'))
+            return redirect(next_url)
         messages.error(request, 'อีเมลหรือรหัสผ่าน ไม่ถูกต้อง!')
     else:
         form = EmailAuthenticationForm()
@@ -98,7 +100,8 @@ def signup_view(request):
             member.save()
             messages.success(request, 'สมัครสมาชิกสำเร็จ')
             return redirect('app:login')
-        messages.error(request, 'รหัสผ่านควรมีความยาว 8 ตัวอักษรขึ้นไป พิมพ์ใหญ่และตัวเลข!')
+        elif not form.is_valid():
+            messages.error(request, 'รหัสผ่านควรมีความยาว 8 ตัวอักษรขึ้นไป พิมพ์ใหญ่และตัวเลข!')
     else:
         form = SignUpForm()
     return render(request,'account/signup.html',{
@@ -137,8 +140,8 @@ def profile_management(request):
 
 def search_video(request):
     txt_search = request.POST.get('txtSearch')
-    video_list = Video.objects.filter(name__contains=txt_search,published=True)
-    return render(request, 'search.html', {'video_list': video_list})
+    video_list = Video.objects.filter(name__contains=txt_search,description__contains=txt_search,published=True)
+    return render(request, 'video/index.html', {'video_list': video_list})
 
 
 #------------------------------------------------------
@@ -211,17 +214,29 @@ def how_to(request):
     return render(request,'how_to.html',{'img':img_num})
 
 
-def password_change(request):
-    if request.user.is_authenticated:
-        user = request.user
-        form = SetPasswordForm(user, request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your password has been changed")
-            return redirect('app:login')
-        form = SetPasswordForm(user)
-        return render(request, 'account/change_password.html', {'form': form})
+# def password_change(request):
+#     if request.user.is_authenticated:
+#         user = request.user
+#         form = SetPasswordForm1(user, request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "เปลี่ยนรหัสผ่านสำเร็จ  ")
+#             return redirect('app:login')
+#         form = SetPasswordForm1(user)
+#         return render(request, 'account/change_password.html', {'form': form})
 
+
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user,data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('app:login')
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'account/change_password.html', {'form': form})
 
 
 def reset_password(request):
@@ -261,27 +276,50 @@ def reset_password_confirm(request):
     return JsonResponse({'results': 'ok'})
 
 
-@login_required
+@login_required(login_url="/login")
 def payment_list(request):
     user = request.user
     payment = Payment.objects.filter(video__member__user=user)
 
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
+    focus = request.GET.get('video_name')
+    if start_date and end_date and focus=="all":
+        start_date = parse_date(start_date)
+        end_date = parse_date(end_date)
+        payment = payment.filter(payment_date__range=[start_date, end_date])
+    elif start_date and end_date and focus!="":
+
+        return redirect(reverse('app:profitfocus')+'?video_name='+str(focus)+'&start_date='+str(start_date)+'&end_date='+str(end_date))
+        # redirect('app:profit_focus')+ video_name=focus, start_date=start_date, end_date=end_date
+    payments = payment.values('video__name','video__id') \
+                     .annotate(total_payment=Sum('payment_amount'))
+
+    total_payment = payment.aggregate(total=Sum('payment_amount'))['total'] or 0
+    fee = total_payment  * 5 /100
+    total_fee = total_payment - fee
+    context={'payment': payments,'total_payment': total_payment ,'fee':fee,'total_fee':total_fee,'start_date':start_date or "",'end_date':end_date or ""}
+    return render(request, 'account/profit.html', context)
+
+
+@login_required(login_url="/login")
+def payment_focus_list(request):
+    video_id = request.GET.get('video_name')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    payment = Payment.objects.filter(video__id=video_id)
     if start_date and end_date:
         start_date = parse_date(start_date)
         end_date = parse_date(end_date)
         payment = payment.filter(payment_date__range=[start_date, end_date])
-
-    payments = payment.values('video__name') \
+    payments = payment.values('video__name', 'video__id') \
                      .annotate(total_payment=Sum('payment_amount'))
-
-    total_payment = payment.aggregate(total=Sum('payment_amount'))['total']
-    fee= total_payment * 5 /100
-    total_fee = total_payment-fee
-    context={'payment': payments,'total_payment': total_payment,'fee':fee,'total_fee':total_fee}
-    return render(request, 'account/profit.html', context)
-
+    total_payment = payment.aggregate(total=Sum('payment_amount'))['total'] or 0
+    fee = total_payment  * 5 /100
+    total_fee = total_payment - fee
+    context = {'payment':payment,'payments': payments, 'total_payment': total_payment, 'fee': fee, 'total_fee': total_fee,
+               'start_date': start_date or "", 'end_date': end_date or ""}
+    return render(request, 'account/profitfocus.html', context)
 
 class MyPDF(PDFTemplateView):
     def get_context_data(self, **kwargs):

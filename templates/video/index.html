@@ -3,32 +3,27 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %} Video Index Page {% endblock %}
+{% block title %} Video Page {% endblock %}
 
 {% block content %}
 
-
-
-
 <div class="container">
     <div class="mb-4">
-      <h6><b>คอร์สทั้งหมด</b></h6>
+      <h4 style="font-weight:500">คอร์สทั้งหมด</h4>
     </div>
     <div class="row">
+      {% if video_list %}
       {% for b in video_list %}
 
 
       <div class="col-lg-3 d-flex align-items-stretch">
 
-        <div class="card card-course mb-4">
-
-
-          <a href="#">
+        <div class="card card-course mb-5" style="width: 300px;">
+          <a href="{% url 'video:detail' slug=b.slug %}" style="background-color: black;">
             {% if b.image %}
-            <img src="{{b.image.url}}" alt="" class="card-img-top" >
+            <img src="{{b.image.url}}" alt="" class="card-img-top" style="height:180px;object-fit: scale-down;">
             {% endif %}
           </a>
-
 
         <div class="card-body">
           {% if b.member.Profile_image %}
@@ -42,24 +37,30 @@
             <i class="fa fa-video"></i>
             {{ b.videolesson_set.count }} บทเรียน
           </div>
+          <div class="small">
+            ผู้สอน {{b.member}}
+          </div>
 
-        <div class="float-start">
-          {{ b.get_rating|safe }}
-          <span>( {{b.average_rating}} )</span>
-        </div>
+          <div class="float-start">
+            {{ b.get_rating|safe }}
+            <span>( {{b.average_rating}} )</span>
+          </div>
 
         </div>
 
         <div class="card-footer border-0 bg-transparent">
-          <h5>฿ {{b.price|floatformat:0|intcomma}} {{b.member}} {{c.user_code}}</h5>
+          {% if b.price == 0 %}
+          <h5 style="color: #080">ฟรี</h5>
+          {% else %}
+          <h5>฿ {{b.price|floatformat:0|intcomma}} </h5>
+          {% endif %}
         </div>
         </div>
       </div>
       {% endfor %}
+      {% else %}
+      ไม่พบผลลัพธ์ที่ค้นหา
+      {% endif %}
     </div>
-
-
-
-
-  </div>
+</div>
 {% endblock %}

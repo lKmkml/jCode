@@ -96,11 +96,15 @@ h2{
 .dropdown-menu > li:hover > .dropdown-submenu {
   display: block;
   }
+  .dropdown-item{
+    font-weight: 300;
+  }
 .dropdown-item:hover {
   background-color: #5179DC;
   color: #FFF;
   transition: all 0.2s ease-in-out;
 }
+
 .btn-category {
   /* color: rgb(255, 255, 255);
   background-color: #5179DC; */
@@ -454,3 +458,14 @@ h6{
 .card-list a .video-box:hover .video-player{
   color: rgba(255, 0, 0,1)
 }
+.framechange{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: #ffffff;
+  border-radius: 20px;
+}
+

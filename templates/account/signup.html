@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-lg-8 offset-lg-2" >
       <div class="signuplink-body">
-        <h2 class="mt-4"><b> SIGN UP </b></h2>
+        <h2 class="mt-4" style="font-weight: 300;"><b> SIGN UP </b></h2>
         <form method="post" novalidate>
             {% csrf_token %}
             <!-- {{ form }} -->
@@ -18,9 +18,10 @@
             </div>
             <div class="mb-2">
               <label for="id_password1" class="form-label" style="font-size: 14px;">รหัสผ่าน</label>
+
               <button type="button" class="btn btn-pophover" data-toggle="popover"
-                      data-content="<ul class='abc'><li> รหัสผ่านมีความยาว 8 ตัวอักษรขึ้นไป </li><li>ประกอบด้วยตัวอักษรทั้งพิมพ์เล็ก </li><li class='test1'>พิมพ์ใหญ่และตัวเลข</li></ul>" data-trigger="hover" style="font-size: 14px;"><b>¡</b></button>
-              <input type="password" class="form-control" id="iid_password1" placeholder="Password" name="password1" autocomplete="new-password"required>
+                      data-bs-content="<ul class='abc'><li> รหัสผ่านมีความยาว 8 ตัวอักษรขึ้นไป </li><li>ประกอบด้วยตัวอักษรทั้งพิมพ์เล็ก </li><li class='test1'>พิมพ์ใหญ่และตัวเลข</li></ul>" data-bs-trigger="hover" style="font-size: 14px;"><i class="fa-solid fa-circle-info"></i></button>
+              <input type="password" class="form-control" id="id_password1" placeholder="Password" name="password1" autocomplete="new-password"required>
             </div>
             <div class="mb-3">
               <label for="id_password2" class="form-label" style="font-size: 14px;">ยืนยันรหัสผ่าน</label>
@@ -29,7 +30,9 @@
 
             <button type="submit"  name="signup_button" class="btn btn-signin mt-2">สมัครสมาชิก</button>
         </form>
+
     </div>
+
   </div>
       <div class="signuplink-footer mt-3">
       สมัครเป็นสมาชิกแล้วใช่ไหม ? <a href="{% url 'app:login' %}">เข้าสู่ระบบที่นี่</a>

@@ -8,3 +8,4 @@ social-auth-app-django
 django-wkhtmltopdf
 wkhtmltopdf
 moviepy
+psycopg2-binary

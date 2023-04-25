@@ -8,7 +8,7 @@ from app.models import Category,CategorySub
 class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
-        exclude = ['id','member', 'slug', 'created', 'updated']
+        exclude = ['id','member', 'slug', 'created', 'updated','videoexample_url']
         labels ={
             'name':'ชื่อ',
             'description':'รายละเอียด',
@@ -54,7 +54,7 @@ class VideochapterForm(forms.ModelForm):
 class VideolessonForm(forms.ModelForm):
     class Meta:
         model = VideoLesson
-        exclude = ['id','videos','chapter', 'created', 'updated']
+        exclude = ['id','videos','chapter', 'created', 'updated','video_url']
         labels ={
             'name':'ชื่อ',
             'duration_time':'ระยะเวลา',

@@ -6,7 +6,7 @@ from .models import Member
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.forms import PasswordChangeForm
 
 #------------------------------------------------------
 #Form การ Login ด้วย Email
@@ -47,10 +47,26 @@ class ProfileForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control'
 
 
-class SetPasswordForm(SetPasswordForm):
-    class Meta:
-        model = get_user_model()
-        fields = ['new_password1', 'new_password2']
+# class SetPasswordForm1(SetPasswordForm):
+#     class Meta:
+#         new_password1 = forms.CharField(
+#         label=_('รหัสผ่านใหม่'),
+#         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+#         strip=False,
+#     )
+
+#         new_password2 = forms.CharField(
+#         label=_('ยืนยันรหัสผ่านใหม่'),
+#         strip=False,
+#         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+#     )
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+
+    error_messages = {
+        'password_incorrect': _("Your old password was entered incorrectly. Please enter it again."),
+    }
 
 
 class EmailInputForm(forms.Form):

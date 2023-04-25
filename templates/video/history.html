@@ -31,7 +31,8 @@
             </a>
           </div>
           <div class="col-lg-8">
-            <h4><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h4>
+            <h7><i class="fa-solid fa-pen-to-square" ></i> {{ i.video.member.user_code }}</h7>
+            <h5><a href="{% url 'video:detail' slug=i.video.slug %}">{{ i.video.name }}</a></h5>
             <div class="History_description">{{ i.video.description }}</div>
             <div class="History_chapter">ประกอบไปด้วย {{ i.video.videochapter_set.count }} บทเรียน , {{ i.video.videolesson_set.count }} วีดีโอ</div>
             <div class="History_price float-end "> <h5> ซื้อคอร์สแล้ว ฿ {{ i.video.price|floatformat:0|intcomma }}</h5></div>

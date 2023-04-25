@@ -99,12 +99,12 @@ WSGI_APPLICATION = 'jCode.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # DATABASES = {
 #     'default': {
@@ -117,13 +117,24 @@ DATABASES = {
 #     }
 # }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Jcode',
+        'USER': 'postgres',
+        'PASSWORD': 'Pentai17',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
@@ -168,7 +179,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
 # test
-VIDEO_SERVER_URL = 'http://192.168.1.7:5000/video?videoname='
+VIDEO_SERVER_URL = 'http://192.168.1.6:5000/video?videoname='
 
 # SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
 # SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
@@ -263,8 +274,8 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'FIELDS': ['email', 'first_name', 'last_name'],
         'APP': {
-            'client_id': '1641470469635785',
-            'secret': '24e9c60682a14e164b3db3654e397589',
+            'client_id': '226390943256247',
+            'secret': '5a14605e50be071ea58f50af47a34f29',
         },
     }
 }
