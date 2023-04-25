@@ -106,27 +106,29 @@ WSGI_APPLICATION = 'jCode.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'mydatabase',
-#         'USER': 'root',
-#         'PASSWORD': 'APPc0de@2018y',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Jcode',
-        'USER': 'postgres',
-        'PASSWORD': 'Pentai17',
+        'NAME': 'mydatabase',
+        'USER': 'root',
+        'PASSWORD': 'APPc0de@2018y',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+
+
+# localhost
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Jcode',
+#         'USER': 'postgres',
+#         'PASSWORD': 'Pentai17',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -177,9 +179,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
+VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
 # test
-VIDEO_SERVER_URL = 'http://192.168.1.6:5000/video?videoname='
+# VIDEO_SERVER_URL = 'http://192.168.1.6:5000/video?videoname='
 
 # SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
 # SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
