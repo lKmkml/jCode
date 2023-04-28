@@ -9,7 +9,7 @@
     <div class="row">
         <h3 style="text-align: center;"><b>สรุปรายได้</b></h3>
         {% if start_date and end_date %}
-        <h7 style="text-align: center;">ตั้งแต่วันที่  {{start_date}} ถึง {{end_date}}</h7>
+        <h7 style="text-align: center;">ตั้งแต่วันที่  {{ start_date|date:"d-m-Y" }} ถึง {{ end_date|date:"d-m-Y" }}</h7>
         {% endif %}
         <h5 style="float: left;"><a href="{% url 'video:index' %}" style="text-decoration: none;"><i class="fa fa-chevron-left"></i>ย้อนกลับ</a></h5>
         <div class="col-lg-8 offset-lg-2">

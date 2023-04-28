@@ -106,6 +106,7 @@ WSGI_APPLICATION = 'jCode.wsgi.application'
 #     }
 # }
 
+# cloud
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -181,7 +182,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 VIDEO_SERVER_URL = 'http://206.189.95.6:5000/video?videoname='
 # test
-# VIDEO_SERVER_URL = 'http://192.168.1.6:5000/video?videoname='
+# VIDEO_SERVER_URL = 'http://192.168.1.7:5000/video?videoname='
 
 # SOCIAL_AUTH_FACEBOOK_KEY = "226390943256247"
 # SOCIAL_AUTH_FACEBOOK_SECRET = "5a14605e50be071ea58f50af47a34f29"
@@ -276,6 +277,11 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'FIELDS': ['email', 'first_name', 'last_name'],
         'APP': {
+            # local
+            # 'client_id': '1641470469635785',
+            # 'secret': '24e9c60682a14e164b3db3654e397589',
+
+            # cloud
             'client_id': '226390943256247',
             'secret': '5a14605e50be071ea58f50af47a34f29',
         },
